@@ -1,0 +1,69 @@
+
+<div class="container">
+    <div class="row margin-b-40">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <h2>Modelli recenti</h2>
+            <p>Cerca il tuo modello, per esempio... </p>
+            <nav class="navbar navbar-light justify-content-center mt-4">
+                <form class="form-inline">
+                    <!-- <button type="button" class="btn btn-default btn-lg mr-3" id="btnSort">Cerca il tuo
+                                    modello</button> -->
+                    <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="restaurante"
+                        aria-label="Ricerca" id="ricercas">
+                </form>
+            </nav>
+        </div>
+    </div>
+    
+    <div class="card-deck mt-2">
+
+    </div>
+
+
+    <!-- <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <div class="col-3">
+                <div class="card" style="width: 18rem;" *ngFor="let user of users">
+                    <img class="card-img-top" src="{{user.avatar}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{user.title}}</h5>
+                        <p class="card-text">Description of the template: {{user.description}}</p>
+                        <div><a href="#" class="btn btn-primary pull-right">Go somewhere</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4"></div>
+    </div> -->
+
+    <div class="row">
+        <div class="col-sm-4 col-lg-4 col-xs-12" *ngFor="let user of users">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-secondary">Go somewhere</a>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-sm-4 col-lg-4 col-xs-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-secondary">Go somewhere</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-4 col-xs-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-secondary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+      </div> -->
+</div>

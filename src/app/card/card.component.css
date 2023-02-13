@@ -1,0 +1,12 @@
+
+.card-wrapper-scroll {
+    overflow: auto;
+}
+
+
+.card-text {
+    height: 150px;
+    overflow-y:scroll;
+}
+
+.card-text p { width: 150px; word-break: break-word; }

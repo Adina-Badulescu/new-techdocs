@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { WhoisService } from 'app/services/whois.service';
+
 
 @Component({
   selector: 'app-order-form',
@@ -29,9 +30,9 @@ export class OrderFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private whoisService: WhoisService) {
     this.contactForm = this.fb.group({
-      webdomain: [''],      
+      webdomain: [''],
       contactFieldsArray: this.fb.array([])
-    });    
+    });
   }
   get contactFieldsArray(): FormArray {
     return this.contactForm.get("contactFieldsArray") as FormArray
@@ -55,10 +56,11 @@ export class OrderFormComponent implements OnInit {
       map(e => (e.target as HTMLInputElement).value),
       filter(text => text.length > 4),
       debounceTime(2000),
-      distinctUntilChanged(), 
+      distinctUntilChanged(),
       switchMap(searchTerm => this.whoisService.searchUrl(searchTerm))
-    );
-    typeahead.subscribe(x => this.searchOut = x);
+    )
+    typeahead.subscribe(x => this.searchOut = x)
+    //.subscribe(x => this.searchOut = x);
   }
 
   ngOnInit(): void {

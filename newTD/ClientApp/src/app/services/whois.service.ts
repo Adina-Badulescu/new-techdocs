@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { Observable, throwError, of, interval } from 'rxjs';
+import { catchError, delay, retry, retryWhen, timeout } from 'rxjs/operators';
 
 
 @Injectable({
@@ -15,9 +15,9 @@ export class WhoisService {
 
   }
 
-  searchUrl(providedUrl: string): Observable<string> {
-    console.log(this._baseUrl.concat(providedUrl));
-    return this.http.get<string>(`${this._baseUrl}getdomain/Query?id=${providedUrl}`);    
+  searchUrl(providedUrl: string): Observable<string> {    
+    return this.http.get<string>(`${this._baseUrl}getdomainn/Query?id=${providedUrl}`)    
+    .pipe(retry({count: 3, delay: 2000, resetOnSuccess: true}), catchError(x => of(x)))
   }
  
   

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Runtime.CompilerServices;
 using Whois;
+using System.Text.Json;
 
 
 namespace newTD.Controllers
@@ -21,21 +22,25 @@ namespace newTD.Controllers
         {
             _logger = logger;
             _whois = new WhoisLookup();
+            _whois.Options.TimeoutSeconds= 60;
         }
 
         [HttpGet("Query")]
 
         public async Task<IActionResult> Query([FromQuery] string id)   
         {
-           
-
-            // Query github.com
-            var response = await _whois.LookupAsync("github.com");
-
-            //Console.WriteLine("{0}", result.OrganizationName); // "Google Inc."
-            //Console.WriteLine(string.Join(" > ", result.RespondedServers)); // "whois.iana.org > whois.verisign-grs.com > whois.markmonitor.com" 
-            return Ok(response.Content);
-
+            try
+            {
+                var response = await _whois.LookupAsync(id);
+                string jsonResponse = JsonSerializer.Serialize(response);
+                return Ok(jsonResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("error into Query() " + ex.Message);
+                throw;
+            }
+            
         }
 
     }

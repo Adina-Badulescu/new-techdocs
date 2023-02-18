@@ -17,6 +17,7 @@ import { WhoisService } from 'app/services/whois.service';
 export class OrderFormComponent implements OnInit {
 
   contactForm: FormGroup;
+  searchOut: string = '';
 
   contactFG: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -53,14 +54,11 @@ export class OrderFormComponent implements OnInit {
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map(e => (e.target as HTMLInputElement).value),
       filter(text => text.length > 4),
-      //tap(_ => console.time()),
       debounceTime(2000),
-      distinctUntilChanged(),      
-      //tap(_ => console.timeEnd()),
-      //tap(_ =>  this.addContactFields())
+      distinctUntilChanged(), 
       switchMap(searchTerm => this.whoisService.searchUrl(searchTerm))
     );
-    typeahead.subscribe(x => console.log(x));
+    typeahead.subscribe(x => this.searchOut = x);
   }
 
   ngOnInit(): void {

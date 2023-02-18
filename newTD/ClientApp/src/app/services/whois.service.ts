@@ -12,13 +12,12 @@ export class WhoisService {
   //configUrl: string = 'app/config.json' 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     
-    
 
   }
 
-  searchUrl(providedUrl: string): Observable<boolean> {
+  searchUrl(providedUrl: string): Observable<string> {
     console.log(this._baseUrl.concat(providedUrl));
-    return this.http.get<boolean>(`${this._baseUrl}GetDomain/Query?id=${providedUrl}`);    
+    return this.http.get<string>(`${this._baseUrl}getdomain/Query?id=${providedUrl}`);    
   }
  
   

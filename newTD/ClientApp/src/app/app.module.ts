@@ -7,6 +7,7 @@ import { CardComponent } from './card/card.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { routes } from './routes';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { CommonModule } from '@angular/common';
 //import { WhoisService } from './services/whois.service';
 
 @NgModule({
@@ -19,7 +20,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    HttpClientModule   
+    HttpClientModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -7,6 +7,14 @@
                     <input type="text" class="form-control" id="webdomain" aria-describedby="webdomain"
                         formControlName="webdomain">
                     <div id="webdomain" class="form-text"></div>
+                    <ng-container *ngIf="searchingSpinner">
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                        </div>
+                    </ng-container>
+
                 </div>
                 <div *ngFor="let contact of contactFieldsArray.controls; let i=index">
                     <ng-container [formGroup]="contactFG">
@@ -18,7 +26,7 @@
                         <input id="tel" type="text" formControlName="tel">
                     </ng-container>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
             </form>
             <p>
                 <!-- <button type="button" (click)="addContactFields()">Add</button> -->

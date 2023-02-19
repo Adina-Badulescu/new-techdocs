@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription, iif } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription, iif, finalize } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { WhoisService } from 'app/services/whois.service';
 
@@ -19,7 +19,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
 
   contactForm: FormGroup;
   searchResult?: boolean;
-  searchResult$?: Observable<boolean>;
+  searchingSpinner?: boolean = false;
   keyClicksSubscription: Subscription = new Subscription();
 
   contactFG: FormGroup = new FormGroup({
@@ -57,7 +57,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
     console.log(this.contactForm.value);
   }
 
-  keyClicks(): Observable<boolean> {
+  keyClicks(): Observable<boolean> {    
     const searchBox = document.getElementById('webdomain') as HTMLInputElement;
     const keyboardInput = fromEvent(searchBox, 'input').pipe(
       map(e => (e.target as HTMLInputElement).value),
@@ -66,6 +66,9 @@ export class OrderFormComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       switchMap(searchTerm => this.whoisService.searchUrl(searchTerm))
     ).pipe(
+      tap(r => this.searchingSpinner = true)
+    )
+    .pipe(
       tap(httpQueryResultAsBoolean => this.addContactFields(httpQueryResultAsBoolean))
     )
     return keyboardInput;

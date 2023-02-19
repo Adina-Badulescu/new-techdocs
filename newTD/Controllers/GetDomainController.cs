@@ -31,9 +31,8 @@ namespace newTD.Controllers
         {
             try
             {
-                var response = await _whois.LookupAsync(id);
-                string jsonResponse = JsonSerializer.Serialize(response);
-                return Ok(jsonResponse);
+                var response = await _whois.LookupAsync(id);                
+                return Ok(response.Status == WhoisStatus.Found ? false : true);                
             }
             catch (Exception ex)
             {

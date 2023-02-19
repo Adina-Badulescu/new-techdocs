@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { WhoisService } from 'app/services/whois.service';
 
@@ -15,10 +15,11 @@ import { WhoisService } from 'app/services/whois.service';
 
 
 
-export class OrderFormComponent implements OnInit {
+export class OrderFormComponent implements OnInit, OnDestroy {
 
   contactForm: FormGroup;
   searchOut: string = '';
+  keyClicksSubscription: Subscription = new Subscription();
 
   contactFG: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -50,26 +51,27 @@ export class OrderFormComponent implements OnInit {
     console.log(this.contactForm.value);
   }
 
-  keyClicks() {
+ keyClicks(): Observable<string> {
     const searchBox = document.getElementById('webdomain') as HTMLInputElement;
-    const typeahead = fromEvent(searchBox, 'input').pipe(
+    const keyboardInput = fromEvent(searchBox, 'input').pipe(
       map(e => (e.target as HTMLInputElement).value),
       filter(text => text.length > 4),
       debounceTime(2000),
       distinctUntilChanged(),
       switchMap(searchTerm => this.whoisService.searchUrl(searchTerm))
     )
-    typeahead.subscribe(x => this.searchOut = x)
-    //.subscribe(x => this.searchOut = x);
+   return keyboardInput//.subscribe(x => this.searchOut = x)
+    
   }
 
   ngOnInit(): void {
-    this.keyClicks();
+    this.keyClicksSubscription = this.keyClicks().subscribe(KeyboardEvent => this.searchOut = KeyboardEvent);
   }
 
+  ngOnDestroy(): void {
+    this.keyClicksSubscription.unsubscribe();
+  }
 
 }
-function ajax(arg0: string): any {
-  throw new Error('Function not implemented.');
-}
+
 

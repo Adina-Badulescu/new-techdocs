@@ -8,7 +8,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { routes } from './routes';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CommonModule } from '@angular/common';
-//import { WhoisService } from './services/whois.service';
+
 
 @NgModule({
   declarations: [

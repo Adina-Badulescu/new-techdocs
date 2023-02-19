@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription, iif, finalize } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+
 import { WhoisService } from 'app/services/whois.service';
 
 
@@ -65,8 +65,6 @@ export class OrderFormComponent implements OnInit, OnDestroy {
       debounceTime(2000),
       distinctUntilChanged(),
       switchMap(searchTerm => this.whoisService.searchUrl(searchTerm))
-    ).pipe(
-      tap(r => this.searchingSpinner = true)
     )
     .pipe(
       tap(httpQueryResultAsBoolean => this.addContactFields(httpQueryResultAsBoolean))

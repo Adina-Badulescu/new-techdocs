@@ -8,15 +8,14 @@ import { catchError, delay, retry, retryWhen, timeout } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class WhoisService {
-  _baseUrl: string = '';
+  private _baseUrl: string = '';
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-
-
+    this._baseUrl = baseUrl;
   }
 
-  searchUrl(providedUrl: string): Observable<boolean> {
-    return this.http.get<string>(`${this._baseUrl}getdomain/Query?id=${providedUrl}`)
+  searchUrl(domainQueried: string): Observable<boolean> {
+    return this.http.get<string>(`${this._baseUrl}getdomain/Query?id=${domainQueried}`)
       .pipe(
         retry({ count: 3, delay: 2000, resetOnSuccess: true }),
         catchError(error => of(error))

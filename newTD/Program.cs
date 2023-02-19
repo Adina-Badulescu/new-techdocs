@@ -19,10 +19,5 @@ app.UseRouting();
 
 app.MapControllers();
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=GetDomain}/{action=Query}/{id?}");
-
-//app.MapFallbackToFile("index.html"); ;
 
 app.Run();

@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription, iif, finalize } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription, iif, finalize, Subject, BehaviorSubject } from 'rxjs';
 
 import { WhoisService } from 'app/services/whois.service';
+import { SpinnerService } from 'app/services/spinner-service.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
   searchResult?: boolean;
   searchingSpinner?: boolean = false;
   keyClicksSubscription: Subscription = new Subscription();
+  displaySpinner: BehaviorSubject<boolean> = this._spinnerService.spinnerBooleanState;
 
   contactFG: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -30,10 +32,10 @@ export class OrderFormComponent implements OnInit, OnDestroy {
 
   // contactFieldsArray: IContactForm;
 
-  constructor(private fb: FormBuilder, private whoisService: WhoisService) {
-    this.contactForm = this.fb.group({
+  constructor(private _fb: FormBuilder, private _whoisService: WhoisService, private _spinnerService: SpinnerService) {
+    this.contactForm = this._fb.group({
       webdomain: [''],
-      contactFieldsArray: this.fb.array([])
+      contactFieldsArray: this._fb.array([])
     });
   }
   get contactFieldsArray(): FormArray {
@@ -64,7 +66,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
       filter(text => text.length > 4),
       debounceTime(2000),
       distinctUntilChanged(),
-      switchMap(searchTerm => this.whoisService.searchUrl(searchTerm))
+      switchMap(searchTerm => this._whoisService.searchUrl(searchTerm))
     )
     .pipe(
       tap(httpQueryResultAsBoolean => this.addContactFields(httpQueryResultAsBoolean))

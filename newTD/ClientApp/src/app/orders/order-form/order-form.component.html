@@ -7,7 +7,7 @@
                     <input type="text" class="form-control" id="webdomain" aria-describedby="webdomain"
                         formControlName="webdomain">
                     <div id="webdomain" class="form-text"></div>
-                    <ng-container *ngIf="searchingSpinner">
+                    <ng-container *ngIf="displaySpinner | async">
                         <div class="text-center">
                             <div class="spinner-border" role="status">
                                 <span class="sr-only"></span>

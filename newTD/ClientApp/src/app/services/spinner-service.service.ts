@@ -4,16 +4,16 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SpinnerServiceService {
-  visibility: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+export class SpinnerService {
+  spinnerBooleanState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor() { }
 
   show() {
-    this.visibility.next(true);
+    this.spinnerBooleanState.next(true);
   }
 
   hide() {
-    this.visibility.next(false);
+    this.spinnerBooleanState.next(false);
   }
 
 }

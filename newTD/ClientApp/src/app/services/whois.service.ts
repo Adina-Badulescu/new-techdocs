@@ -15,11 +15,11 @@ export class WhoisService {
   }
 
   searchUrl(domainQueried: string): Observable<boolean> {
-    return this.http.get<string>(`${this._baseUrl}getdomain/Query?id=${domainQueried}`)
-      .pipe(
-        retry({ count: 3, delay: 2000, resetOnSuccess: true }),
-        catchError(error => of(error))
-      )
+    return this.http.get<boolean>(`${this._baseUrl}getdomainN/Query?id=${domainQueried}`)
+      //.pipe(
+      //  retry({ count: 2, delay: 2000, resetOnSuccess: true }),
+      //  catchError(error => of(error))
+      //)
   }
 
 

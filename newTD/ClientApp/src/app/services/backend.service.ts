@@ -7,7 +7,7 @@ import { catchError, retry } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class WhoisService {
+export class BackendService {
   private _baseUrl: string = '';
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {

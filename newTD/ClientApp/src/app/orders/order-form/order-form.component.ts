@@ -4,7 +4,7 @@ import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription, iif, finalize, Subject, BehaviorSubject } from 'rxjs';
 
-import { WhoisService } from 'app/services/whois.service';
+import { BackendService } from 'app/services/backend.service';
 import { SpinnerService } from 'app/services/spinner.service';
 
 
@@ -32,7 +32,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
 
   // contactFieldsArray: IContactForm;
 
-  constructor(private _fb: FormBuilder, private _whoisService: WhoisService, private _spinnerService: SpinnerService) {
+  constructor(private _fb: FormBuilder, private _backendService: BackendService, private _spinnerService: SpinnerService) {
     this.contactForm = this._fb.group({
       webdomain: [''],
       contactFieldsArray: this._fb.array([])
@@ -66,7 +66,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
       filter(text => text.length > 4),
       debounceTime(2000),
       distinctUntilChanged(),
-      switchMap(searchTerm => this._whoisService.searchUrl(searchTerm))
+      switchMap(searchTerm => this._backendService.searchUrl(searchTerm))
     )
     .pipe(
       tap(httpQueryResultAsBoolean => this.addContactFields(httpQueryResultAsBoolean))

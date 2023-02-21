@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WhoisService } from './whois.service';
+import { BackendService } from './backend.service';
 
 describe('WhoisService', () => {
-  let service: WhoisService;
+  let service: BackendService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(WhoisService);
+    service = TestBed.inject(BackendService);
   });
 
   it('should be created', () => {

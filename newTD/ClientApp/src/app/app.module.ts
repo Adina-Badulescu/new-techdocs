@@ -8,8 +8,8 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { routes } from './routes';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CommonModule } from '@angular/common';
-import { Interceptor } from './services/interceptor.service';
-import { ErrorInterceptor } from './services/error-interceptor.interceptor';
+import { SpinnerInterceptor } from './services/spinner-interceptor.service';
+// import { ErrorInterceptor } from './services/error-interceptor.interceptor';
 
 
 @NgModule({
@@ -33,7 +33,7 @@ import { ErrorInterceptor } from './services/error-interceptor.interceptor';
     // },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: Interceptor,
+      useClass: SpinnerInterceptor,
       multi: true,
     }
   ],

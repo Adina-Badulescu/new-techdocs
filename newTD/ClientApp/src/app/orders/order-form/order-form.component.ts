@@ -5,7 +5,7 @@ import { Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, empty, Observable, Subscription, iif, finalize, Subject, BehaviorSubject } from 'rxjs';
 
 import { WhoisService } from 'app/services/whois.service';
-import { SpinnerService } from 'app/services/spinner-service.service';
+import { SpinnerService } from 'app/services/spinner.service';
 
 
 @Component({

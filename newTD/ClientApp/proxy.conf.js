@@ -7,6 +7,7 @@ const PROXY_CONFIG = [
   {
     context: [
       "/getdomain",
+      "/templates"
    ],
     target: target,
     secure: false,

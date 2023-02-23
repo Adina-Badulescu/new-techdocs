@@ -1,11 +1,15 @@
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using newTD.Context;
 using newTD.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 builder.Services.AddSingleton<DbContext>();
-builder.Services.AddSingleton<ITemplateRepository, TemplatesRepository>();
+//builder.Services.AddScoped<ITemplateRepository, TemplatesRepository>();
 builder.Services.AddControllers();
 //builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();

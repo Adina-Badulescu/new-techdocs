@@ -7,7 +7,6 @@ namespace newTD.Repository
     public class TemplatesRepository : ITemplateRepository
     {
         private readonly DbContext _context;
-
         public TemplatesRepository(DbContext context)
         {
             _context = context;           
@@ -17,11 +16,9 @@ namespace newTD.Repository
         {
             var getAllTemplates = "SELECT * FROM dbo.templates";
 
-            using (var connection = _context.CreateaConection())
-            {
-                var companies = await connection.QueryAsync<TemplatesList>(getAllTemplates);
-                return companies.ToList();
-            }
+            using var connection = _context.CreateaConection();
+            var companies = await connection.QueryAsync<TemplatesList>(getAllTemplates);
+            return companies.ToList();
         }
 
     }

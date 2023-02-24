@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using newTD.Entities;
-using newTD.Repository;
+
 using Whois;
 
 namespace newTD.Controllers
@@ -11,11 +10,14 @@ namespace newTD.Controllers
     public class TemplatesController : ControllerBase
     {
         private readonly ILogger<TemplatesController> _logger;
-        private readonly ITemplateRepository _templateRepository;
-        public TemplatesController(ILogger<TemplatesController> logger, ITemplateRepository templateRepository)
+        private readonly ITemplateData _templateData;
+        
+        public TemplatesController(ILogger<TemplatesController> logger, ITemplateData templateData)
         {
             _logger = logger;
-            _templateRepository = templateRepository;
+            _templateData = templateData;
+
+
         }
 
         [HttpGet("List")]
@@ -23,7 +25,7 @@ namespace newTD.Controllers
         {
             try
             {
-                var templates = await _templateRepository.ListTemplates();
+                var templates = await _templateData.GetTemplates();
                 _logger.LogInformation(templates.ToString());
                 return Ok(templates);
             }

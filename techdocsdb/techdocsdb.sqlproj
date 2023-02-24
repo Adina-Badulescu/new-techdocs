@@ -62,10 +62,16 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Templates.sql" />
-    <Build Include="dbo\StoredProcedures\spTemplates_getAll.sql" />
-    <Build Include="dbo\StoredProcedures\spTemplates_Get.sql" />
+    <Build Include="dbo\StoredProcedures\spTemplate_getAll.sql" />
+    <Build Include="dbo\StoredProcedures\spTemplate_Get.sql" />
     <Build Include="dbo\StoredProcedures\spTemplate_Delete.sql" />
-    <Build Include="dbo\StoredProcedures\spTemplates_Insert.sql" />
-    <Build Include="dbo\StoredProcedures\spTemplates_Update.sql" />
+    <Build Include="dbo\StoredProcedures\spTemplate_Insert.sql" />
+    <Build Include="dbo\StoredProcedures\spTemplate_Update.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="techdocsdb.publish.xml" />
   </ItemGroup>
 </Project>

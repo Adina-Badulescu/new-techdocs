@@ -1,15 +1,18 @@
+global using DataAccess.Data;
+using DataAccess.DbAccess;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using newTD.Context;
-using newTD.Repository;
+
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddOptions<ApplicationOptions>()
+    .BindConfiguration("");
+var connectionString = builder.Configuration.GetConnectionString("Default");
 
 // Add services to the container.
-builder.Services.AddSingleton<DbContext>();
-//builder.Services.AddScoped<ITemplateRepository, TemplatesRepository>();
+builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddSingleton<ITemplateData, TemplateData>();
 builder.Services.AddControllers();
 //builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spTemplates_Get]
+﻿CREATE PROCEDURE [dbo].[spTemplate_Get]
 	@Id uniqueidentifier
 AS
 BEGIN

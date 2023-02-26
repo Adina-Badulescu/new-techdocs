@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spTemplates_Insert]
+﻿CREATE PROCEDURE [dbo].[spTemplate_Insert]
 	@Title varchar(40) ,
 	@Description varchar(100),
 	@MainColors varchar(30),

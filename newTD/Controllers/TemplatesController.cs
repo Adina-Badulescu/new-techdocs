@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 using Whois;
 
@@ -27,7 +29,8 @@ namespace newTD.Controllers
             {
                 var templates = await _templateData.GetTemplates();
                 _logger.LogInformation(templates.ToString());
-                return Ok(templates);
+                var jsonTemplates = JsonSerializer.Serialize<IEnumerable<TemplateModel>>(templates);
+                return Ok(jsonTemplates);
             }
             catch (Exception ex)
             {

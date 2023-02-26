@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spTemplates_Update]
+﻿CREATE PROCEDURE [dbo].[spTemplate_Update]
 	@Id UNIQUEIDENTIFIER,
 	@Title varchar(40),
 	@Description varchar(100),

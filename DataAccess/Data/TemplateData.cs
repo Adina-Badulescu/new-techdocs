@@ -18,7 +18,7 @@ namespace DataAccess.Data
         {
             try
             {
-                return await _db.LoadData<TemplateModel, dynamic>("dbo.spTemplates_getAll", new { });
+                return await _db.LoadData<TemplateModel, dynamic>("dbo.spTemplate_getAll", new { });
             }
             catch (Exception ex)
             {

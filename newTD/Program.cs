@@ -3,12 +3,12 @@ using DataAccess.DbAccess;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-
+using newTD.Options;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddOptions<ApplicationOptions>()
-    .BindConfiguration("");
-var connectionString = builder.Configuration.GetConnectionString("Default");
+
+//builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection(ConnectionStringOptions.SqlConnection));
+//var connectionString = builder.Configuration.GetConnectionString("");
 
 // Add services to the container.
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();

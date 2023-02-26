@@ -1,6 +1,6 @@
 ﻿IF NOT EXISTS (SELECT 1 FROM dbo.Templates)
 
-BEGIN
+BEGIN	
 	INSERT INTO dbo.Templates ([Title], [Description],[MainColors],[ResponsiveColumns])
 	VALUES
 	('Magazim Imbracaminte', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', 'red, yellow, gray', 3)

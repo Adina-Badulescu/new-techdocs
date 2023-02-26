@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spTemplates_getAll]
+﻿CREATE PROCEDURE [dbo].[spTemplate_getAll]
 
 AS
 BEGIN

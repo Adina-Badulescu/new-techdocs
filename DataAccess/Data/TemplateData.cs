@@ -28,10 +28,12 @@ namespace DataAccess.Data
 
         }
 
-        public async Task<TemplateModel?> GetTemplate(string id)
+        public async Task<TemplateModel?> GetTemplate(Guid id)
         {
             try
             {
+
+
                 var result = await _db.LoadData<TemplateModel, dynamic>("dbo.spTemplate_Get", new { Id = id });
                 return result.FirstOrDefault();
             }

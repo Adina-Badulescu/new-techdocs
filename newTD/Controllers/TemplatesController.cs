@@ -29,7 +29,7 @@ namespace newTD.Controllers
             {
                 var templates = await _templateData.GetTemplates();
                 _logger.LogInformation(templates.ToString());
-                var jsonTemplates = JsonSerializer.Serialize<IEnumerable<TemplateModel>>(templates);
+                var jsonTemplates = JsonSerializer.Serialize(templates);
                 return Ok(jsonTemplates);
             }
             catch (Exception ex)
@@ -41,16 +41,33 @@ namespace newTD.Controllers
         }
 
         [HttpGet("GetId")]
-        public async Task<IActionResult> GetTemplate([FromQuery] string Id)
+        public async Task<IActionResult> GetTemplate([FromQuery] Guid Id)
         {
             try
             {
-                
-                return Ok(Id);
+                var template = await _templateData.GetTemplate(Id);
+                var jsonTemplate = JsonSerializer.Serialize(template);
+                return Ok(jsonTemplate);
             }
             catch (Exception ex)
             {
                 _logger.LogError("error into Query() " + ex.Message);
+                throw;
+            }
+
+        }
+
+        [HttpPost("CreateTemplate")]
+        public async Task<IActionResult> CreateTemplate([FromBody] TemplateModel template)
+        {
+            try
+            {
+                await _templateData.InsertTemplate(template);
+                return Ok($"New Template Inserted with: {template}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("error into CreateTemplate() " + ex.Message);
                 throw;
             }
 

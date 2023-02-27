@@ -7,8 +7,6 @@ using newTD.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection(ConnectionStringOptions.SqlConnection));
-//var connectionString = builder.Configuration.GetConnectionString("");
 
 // Add services to the container.
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();

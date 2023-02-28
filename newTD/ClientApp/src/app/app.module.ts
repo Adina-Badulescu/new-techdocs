@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { CardComponent } from './card/card.component';
+import { TemplatesContainerComponent } from './middle-section/templates-container/templates-container.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { routes } from './routes';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -15,7 +15,7 @@ import { SpinnerInterceptor } from './services/spinner-interceptor.service';
 @NgModule({
   declarations: [
     AppComponent,
-    CardComponent,
+    TemplatesContainerComponent,
     CarouselComponent,
     NotFoundComponent
   ],

@@ -66,7 +66,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
       filter(text => text.length > 4),
       debounceTime(2000),
       distinctUntilChanged(),
-      switchMap(searchTerm => this._backendService.searchUrl(searchTerm))
+      switchMap(searchTerm => this._backendService.searchDomain(searchTerm))
     )
     .pipe(
       tap(httpQueryResultAsBoolean => this.addContactFields(httpQueryResultAsBoolean))

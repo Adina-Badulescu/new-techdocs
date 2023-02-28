@@ -61,7 +61,7 @@ namespace DataAccess.Data
         {
             try
             {
-                await _db.SaveData("dbo.spTemplate_Update() ", template);
+                await _db.SaveData("dbo.spTemplate_Update", template);
             }
             catch (Exception ex)
             {
@@ -70,11 +70,11 @@ namespace DataAccess.Data
             }
         }
 
-        public async Task DeleteTemplate(string id)
+        public async Task DeleteTemplate(Guid id)
         {
             try
             {
-                await _db.SaveData("dbo.spTemplate_Delete() ", new { Id = id });
+                await _db.SaveData("dbo.spTemplate_Delete", new { Id = id });
             }
             catch (Exception ex)
             {

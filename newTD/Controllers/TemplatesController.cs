@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-
 using Whois;
 
 namespace newTD.Controllers
@@ -22,7 +21,7 @@ namespace newTD.Controllers
 
         }
 
-        [HttpGet("List")]
+        [HttpGet("ListTemplates")]
         public async Task<IActionResult> ListTemplates()
         {
             try
@@ -34,7 +33,7 @@ namespace newTD.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("error into Query() " + ex.Message);
+                _logger.LogError("error into Template Controller on Query() " + ex.Message);
                 throw;
             }
 
@@ -51,7 +50,7 @@ namespace newTD.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("error into Query() " + ex.Message);
+                _logger.LogError("error into Template Controller on Query() " + ex.Message);
                 throw;
             }
 
@@ -67,7 +66,39 @@ namespace newTD.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("error into CreateTemplate() " + ex.Message);
+                _logger.LogError("error into Template Controller on CreateTemplate() " + ex.Message);
+                throw;
+            }
+
+        }
+
+        [HttpPost("UpdateTemplate")]
+        public async Task<IActionResult> UpdateTemplate([FromBody] TemplateModel template)
+        {
+            try
+            {
+                await _templateData.UpdateTemplate(template);
+                return Ok($"Template Updated with: {template}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("error into Template Controller on UpdateTemplate() " + ex.Message);
+                throw;
+            }
+
+        }
+
+        [HttpDelete("DeleteTemplate")]
+        public async Task<IActionResult> DeleteTemplate([FromQuery] Guid Id)
+        {
+            try
+            {
+                await _templateData.DeleteTemplate(Id);
+                return Ok($"Template with Id={Id}, Deleted");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("error into Template Controller on DeleteTemplate() " + ex.Message);
                 throw;
             }
 

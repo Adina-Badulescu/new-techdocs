@@ -9,6 +9,7 @@ import { routes } from './routes';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CommonModule } from '@angular/common';
 import { SpinnerInterceptor } from './services/spinner-interceptor.service';
+import { CardComponent } from './middle-section/card-component/card.component';
 // import { ErrorInterceptor } from './services/error-interceptor.interceptor';
 
 
@@ -17,7 +18,8 @@ import { SpinnerInterceptor } from './services/spinner-interceptor.service';
     AppComponent,
     TemplatesContainerComponent,
     CarouselComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,

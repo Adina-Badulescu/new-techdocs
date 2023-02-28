@@ -23,7 +23,7 @@ export class BackendService {
       )
   }
 
-  listTemplates(): Observable<ICard> {
+  listTemplates(): Observable<ICard[]> {
     return this.http.get<string>(`${this._baseUrl}templates/ListTemplates`)
     .pipe(
       retry({ count: 2, delay: 2000, resetOnSuccess: true }),

@@ -1,9 +1,10 @@
 ﻿CREATE TABLE [dbo].[Templates]
 (
 	[Id] uniqueidentifier NOT NULL  PRIMARY KEY default newid(),
-	[Title] varchar(40),
-	[Description] varchar(100),
-	[MainColors] varchar(30),
-	[ResponsiveColumns] int
+	[Title] nvarchar(40),
+	[Description] nvarchar(100),
+	[MainColors] nvarchar(30),
+	[ResponsiveColumns] int,
+	[ImgPath] nvarchar(50)
 
 )

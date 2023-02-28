@@ -18,18 +18,9 @@
 
 
   <div class="row">
-    <!-- <ng-template *ngIf="cardsDataArray"> -->
-    <div class="col-sm-4 col-lg-4 col-xs-12 my-5"  *ngFor="let card of cardsArray">
-      <div class="w-100 card-wrapper-scroll">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">{{card.Title}}</h5>
-            <p class="card-text">{{card.Description}}</p>
-            <a (click)="showOrder()"  class="btn btn-secondary">Alege modelul</a>
-          </div>
-        </div>
+    <!-- <ng-template > -->
+      <div class="col-sm-4 col-lg-4 col-xs-12 my-5" *ngFor="let card of cardsArray">
+        <app-card-component [Title]="card.Title" [Description]="card.Description"></app-card-component>
       </div>
-    </div>
-  <!-- </ng-template> -->
-  {{cardsArray | json}}
+    <!-- </ng-template> -->
   </div>

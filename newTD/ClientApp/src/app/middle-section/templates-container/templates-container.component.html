@@ -7,7 +7,7 @@
         <form class="form-inline">
           <!-- <button type="button" class="btn btn-default btn-lg mr-3" id="btnSort">Cerca il tuo
                                     modello</button> -->
-          <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="restaurante" aria-label="Cauta"
+          <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="restaurant japonez" aria-label="Cauta"
             id="cauta">
         </form>
       </nav>
@@ -18,9 +18,9 @@
 
 
   <div class="row">
-    <!-- <ng-template > -->
-      <div class="col-sm-4 col-lg-4 col-xs-12 my-5" *ngFor="let card of cardsArray">
-        <app-card-component [Title]="card.Title" [Description]="card.Description"></app-card-component>
+    <ng-container *ngFor="let card of cardsArray" >
+      <div class="col-sm-4 col-lg-4 col-xs-12 my-5" >
+        <app-card-component [Title]="card.Title" [Description]="card.Description" [Id]="card.Id"></app-card-component>
       </div>
-    <!-- </ng-template> -->
+    </ng-container>
   </div>

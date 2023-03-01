@@ -10,16 +10,19 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { CommonModule } from '@angular/common';
 import { SpinnerInterceptor } from './services/spinner-interceptor.service';
 import { CardComponent } from './middle-section/card-component/card.component';
+import { HomeComponent } from './home/home.component';
 // import { ErrorInterceptor } from './services/error-interceptor.interceptor';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     TemplatesContainerComponent,
     CarouselComponent,
     NotFoundComponent,
-    CardComponent
+    CardComponent,
+    
   ],
   imports: [
     BrowserModule,

@@ -6,7 +6,7 @@ import { OrderFormComponent } from './order-form/order-form.component';
 
 
 
-const routes: Routes = [
+export const routes: Routes = [
   {path: '', component: OrderFormComponent}
 ];
 

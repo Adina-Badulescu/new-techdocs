@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { SpinnerInterceptor } from './services/spinner-interceptor.service';
 import { CardComponent } from './middle-section/card-component/card.component';
 import { HomeComponent } from './home/home.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 // import { ErrorInterceptor } from './services/error-interceptor.interceptor';
 
 
@@ -27,6 +28,8 @@ import { HomeComponent } from './home/home.component';
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     CommonModule
   ],

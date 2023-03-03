@@ -18,7 +18,7 @@
 
 
   <div class="row">
-    <ng-container *ngFor="let card of cardsArray | async" >
+    <ng-container *ngFor="let card of cardsArray$ | async" >
       <div class="col-sm-4 col-lg-4 col-xs-12 my-5" >
         <app-card-component [Title]="card.Title" [Description]="card.Description" [Id]="card.Id"></app-card-component>
       </div>

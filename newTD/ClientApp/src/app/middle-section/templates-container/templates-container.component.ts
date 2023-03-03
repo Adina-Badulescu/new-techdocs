@@ -11,23 +11,30 @@ import { tempArray } from './temp';
   styleUrls: ['./templates-container.component.css']
 })
 export class TemplatesContainerComponent implements OnInit, OnDestroy {
-  cardsArray: Observable<ICard[]> = new Observable();
+  cardsArray$: Observable<ICard[]> = new Observable();
   backendServiceSubscription: Subscription = new Subscription();
   searchTemplateInputField = new FormControl('');
-  keyboardInput: Observable<string | null> = new Observable();
-
+  keyboardInput$: Observable<string | null> = new Observable();
+  backspaceEvent$: Observable<Event> = new Observable();
   constructor(private _backendService: BackendService) { }
 
-  sortObjectsInCardArray(): Observable<ICard[]> {
+  sortObjectsInCardArray$(): Observable<ICard[]> {
+    this.cardsArray$ = this._backendService.listTemplates();
 
-    this.cardsArray = this._backendService.listTemplates()
-    .pipe(
-      map(cardObjArray => cardObjArray
-      .filter(cardObj => cardObj.Title.includes(this.searchTemplateInputField.value ? this.searchTemplateInputField.value : ""))),
-      tap(v => console.log(v))
-    )
 
-    return this.cardsArray
+    this.searchTemplateInputField.valueChanges
+      .pipe(
+        switchMap(typedText => this.cardsArray$
+          .pipe(
+            map(cardObjArray => cardObjArray
+              .filter(cardObj => cardObj.Title.includes(typedText ? typedText : ""))),
+          )
+
+        )  
+              
+      ).subscribe(v => this.cardsArray$ = of(v))//.subscribe(v =>  console.log('this.cardsArray$ value ' + JSON.stringify(v)))
+
+    return this.cardsArray$
   }
 
   capitalizeFirstLetter(string: string) {
@@ -35,7 +42,9 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
   }
 
 
-
+  getKeyboardInput(): Observable<any> {
+    return this.searchTemplateInputField.valueChanges
+  }
 
 
   ngOnInit(): void {
@@ -43,8 +52,8 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
     // .subscribe(cardData => this.cardsArray = cardData);
     // this.keyClicks().subscribe(v => console.log("v" + v));
     // this.sortObjectsInArray().subscribe(v=> console.log("sorted " + JSON.stringify(v)));
-    this.sortObjectsInCardArray().subscribe(v => console.log("Value: " + v))
-
+    this.sortObjectsInCardArray$().subscribe();
+    // this.getKeyboardInput().pipe(map(v => v + "Q")).subscribe(v => console.log(v));
   }
 
   ngOnDestroy(): void {

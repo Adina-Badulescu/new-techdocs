@@ -13,7 +13,7 @@ export class CardComponent implements OnInit {
   @Input() Title: string = "";
   @Input() Description: string = "";
   @Input() Id: string = "";
-  // private nav: Navigation;
+  
   constructor(private componentCommunicationService: ComponentCommunicationService,
     private router: Router) { }
 
@@ -26,8 +26,7 @@ export class CardComponent implements OnInit {
       }
 
     );
-    // console.log("Title: " + this.Title);
-    // this.nav.previousNavigation;
+
   }
 
   ngOnInit(): void {

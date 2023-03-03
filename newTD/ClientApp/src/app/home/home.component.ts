@@ -8,10 +8,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  // title = 'Techdocs-app';
-  // hideTemplateSearchSection: boolean = true;
-  // navigationBackSubscription: Subscription = new Subscription();
-  // showHideSubscription: Subscription = new Subscription();
+
 
   constructor() {
 

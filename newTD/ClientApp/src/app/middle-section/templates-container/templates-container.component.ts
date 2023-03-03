@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { BackendService } from 'app/services/backend.service';
 import { debounceTime, distinctUntilChanged, filter, from, fromEvent, map, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -11,14 +11,24 @@ import { tempArray } from './temp';
   styleUrls: ['./templates-container.component.css']
 })
 export class TemplatesContainerComponent implements OnInit, OnDestroy {
+
+
+
   cardsArray$: Observable<ICard[]> = new Observable();
   backendServiceSubscription: Subscription = new Subscription();
   searchTemplateInputField = new FormControl('');
   keyboardInput$: Observable<string | null> = new Observable();
   backspaceEvent$: Observable<Event> = new Observable();
+
+  @HostListener('window:keydown.backspace', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    this._backendService.listTemplates().subscribe(r => this.cardsArray$ = of(r));
+  }
+
   constructor(private _backendService: BackendService) { }
 
-  sortObjectsInCardArray$(): Observable<ICard[]> {
+  sortObjectsInCardArray$(): Observable<ICard[]> 
+  {
     this.cardsArray$ = this._backendService.listTemplates();
 
 
@@ -32,7 +42,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
         )  
               
-      ).subscribe(v => this.cardsArray$ = of(v))//.subscribe(v =>  console.log('this.cardsArray$ value ' + JSON.stringify(v)))
+      ).subscribe(value => this.cardsArray$ = of(value))//.subscribe(v =>  console.log('this.cardsArray$ value ' + JSON.stringify(v)))
 
     return this.cardsArray$
   }

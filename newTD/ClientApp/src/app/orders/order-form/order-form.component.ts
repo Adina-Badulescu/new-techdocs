@@ -93,7 +93,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.keyClicksSubscription.unsubscribe();
-    this.routeParamsSubscription.unsubscribe();
+    this.routeParamsSubscription.unsubscribe
   }
 
 }

@@ -3,7 +3,8 @@ import { BackendService } from 'app/services/backend.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, first, from, fromEvent, iif, map, Observable, of, Subject, Subscription, switchMap, take, tap } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ICard } from '../card-component/ICard.interface';
-import { tempArray } from './temp';
+
+
 
 
 @Component({
@@ -27,35 +28,15 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
   handleKeyDown(event: KeyboardEvent) {
 
     let backspaceEvent$: Subject<KeyboardEvent> = new BehaviorSubject(event);
-    // backspaceEvent$.next(event).pipe(first(), distinctUntilChanged()).subscribe(_ => this._backendService.listTemplates().subscribe(r => this.cardArray = r));
 
-    // .subscribe(_ => this._backendService.listTemplates().subscribe(r => this.cardArray = r));    
-    // backspaceEvent$.pipe(iif(() => this.checkCounter, this._backendService.listTemplates(), emp))
-    backspaceEvent$.pipe(tap(_ =>  this.counter++ ))
+    backspaceEvent$.pipe(tap(_ => this.counter++))
       .subscribe(_ => {
         if (this.counter == 1) {
           this._backendService.listTemplates().subscribe(r => this.cardArray = r);
-          this.searchTemplateInputField.reset();
-          console.log(this.counter);
+          this.searchTemplateInputField.reset();          
         }
-
         return
-
-
       });
-    // console.log('counter: ' + this.counter);
-
-
-
-    // console.log(this.searchTemplateInputField.value);
-
-    // if(this.searchTemplateInputField.value === '') {
-    //   this.searchTemplateInputField.reset();
-    //   // this.searchTemplateInputField.markAsDirty();  
-    //   // this.searchTemplateInputField.markAsTouched();      
-    //   this._backendService.listTemplates().subscribe(r => this.cardArray = r);
-    // }
-    // else null;
 
   }
 
@@ -69,23 +50,26 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
 
     this.searchTemplateInputField.valueChanges
-      .pipe(
+      .pipe(        
         switchMap(typedText => of(this.cardArray)
           .pipe(
             map(cardObjArray => cardObjArray
-              .filter(cardObj => cardObj.Title.includes(typedText ? typedText : ""))),
-              tap(_ => this.counter = 0)
+              .filter(cardObj => cardObj.Title.includes(typedText ? this.capitalizeFirstLetter(typedText) : ""))),
+            tap(_ => this.counter = 0)
           )
 
         )
 
-      ).subscribe(value => this.cardArray = value)//.subscribe(v =>  console.log('this.cardArray value ' + JSON.stringify(v)))
+      ).subscribe(value => this.cardArray = value)
 
     return this.cardArray
   }
 
-  capitalizeFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  capitalizeFirstLetter(string: string | null): string {
+    if(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    return "";
   }
 
 
@@ -95,13 +79,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    // this.cardsArray = this._backendService.listTemplates()
-    // .subscribe(cardData => this.cardsArray = cardData);
-    // this.keyClicks().subscribe(v => console.log("v" + v));
-    // this.sortObjectsInArray().subscribe(v=> console.log("sorted " + JSON.stringify(v)));
     this.sortObjectsInCardArray();
-    // this.x().subscribe(v => console.log('value in search ' + v));
-    // this.getKeyboardInput().pipe(map(v => v + "Q")).subscribe(v => console.log(v));
   }
 
   ngOnDestroy(): void {

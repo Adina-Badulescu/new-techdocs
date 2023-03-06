@@ -67,11 +67,26 @@
     <Build Include="dbo\StoredProcedures\spTemplate_Delete.sql" />
     <Build Include="dbo\StoredProcedures\spTemplate_Insert.sql" />
     <Build Include="dbo\StoredProcedures\spTemplate_Update.sql" />
+    <Build Include="Tables\Orders.sql" />
+    <Build Include="Tables\Contacts.sql" />
+    <Build Include="dbo\StoredProcedures\spContacts_getAll.sql" />
+    <Build Include="dbo\StoredProcedures\spContacts_Get.sql" />
+    <Build Include="dbo\StoredProcedures\spContacts_Insert.sql" />
+    <Build Include="dbo\StoredProcedures\spContacts_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\spContacts_Update.sql" />
+    <Build Include="dbo\StoredProcedures\spOrders_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\spOrders_Get.sql" />
+    <Build Include="dbo\StoredProcedures\spOrders_getAll.sql" />
+    <Build Include="dbo\StoredProcedures\spOrders_Insert.sql" />
+    <Build Include="dbo\StoredProcedures\spOrders_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="techdocsdb.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="techdocsdb.refactorlog" />
   </ItemGroup>
 </Project>

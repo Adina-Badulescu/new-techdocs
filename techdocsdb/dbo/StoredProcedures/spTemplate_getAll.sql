@@ -2,6 +2,6 @@
 
 AS
 BEGIN
-	SELECT Id, Title, [Description], MainColors, ResponsiveColumns 
+	SELECT TemplateId, Title, [Description], MainColors, ResponsiveColumns, ImgPath
 	from dbo.Templates;
 END

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="65a43679-1c64-4fdb-b1f3-0b0cb87e486d" ChangeDateTime="03/06/2023 14:09:10">
+    <Property Name="ElementName" Value="[dbo].[Orders].[MaintenanceY]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Orders]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Maintenance12M" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5b65a2ca-eca5-498e-a8df-bbe62ed162f4" ChangeDateTime="03/06/2023 14:09:16">
+    <Property Name="ElementName" Value="[dbo].[Orders].[Maintenance]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Orders]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Maintenance3M" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c194ea8a-911a-40d2-8ef5-abe28c24bd86" ChangeDateTime="03/06/2023 14:48:33">
+    <Property Name="ElementName" Value="[dbo].[Contact].[ContactTimeStamp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Contact]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TimeStamp" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e7e22d3e-a220-4e77-b2f5-8b37434b958a" ChangeDateTime="03/06/2023 14:49:57">
+    <Property Name="ElementName" Value="[dbo].[Contact].[TimeStamp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Contact]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CTimeStamp" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c18ddde2-1b8b-411d-845e-9a17f0f27011" ChangeDateTime="03/06/2023 16:45:03">
+    <Property Name="ElementName" Value="[dbo].[Contacts].[CTimeStamp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Contacts]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CTimeStampCreation" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="15c2a7ff-d235-449d-bf16-4210846b8a3f" ChangeDateTime="03/06/2023 17:19:38">
+    <Property Name="ElementName" Value="[dbo].[Orders].[OTimeStamp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Orders]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OTimeStampCreation" />
+  </Operation>
+</Operations>

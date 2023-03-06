@@ -1,10 +1,11 @@
 ﻿CREATE PROCEDURE [dbo].[spTemplate_Insert]
-	@Title varchar(40) ,
-	@Description varchar(100),
-	@MainColors varchar(30),
-	@ResponsiveColumns int
+	@Title nvarchar(40) ,
+	@Description nvarchar(100),
+	@MainColors nvarchar(30),
+	@ResponsiveColumns int,
+	@ImgPath nvarchar(50)
 AS
 BEGIN
-	INSERT INTO dbo.Templates (Title, [Description], MainColors, ResponsiveColumns)
-	VALUES (@Title, @Description, @MainColors, @ResponsiveColumns);
+	INSERT INTO dbo.Templates (Title, [Description], MainColors, ResponsiveColumns, ImgPath)
+	VALUES (@Title, @Description, @MainColors, @ResponsiveColumns, @ImgPath);
 END

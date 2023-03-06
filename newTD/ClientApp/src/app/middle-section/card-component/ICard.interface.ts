@@ -1,5 +1,5 @@
 export interface ICard {
-    Id: string;
+    TemplateId: string;
     Title: string;
     Description: string;
     MainColors: string;

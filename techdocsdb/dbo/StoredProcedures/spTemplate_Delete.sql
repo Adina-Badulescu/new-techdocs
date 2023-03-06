@@ -1,8 +1,8 @@
-﻿CREATE PROCEDURE [dbo].[spTemplate_Delete]
+﻿CREATE PROCEDURE [dbo].[spTemplates_Delete]
 	@Id uniqueidentifier
 AS
 BEGIN
 	DELETE  
 	FROM dbo.Templates
-	WHERE Id = @Id;
+	WHERE TemplateId = @Id;
 END

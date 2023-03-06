@@ -2,7 +2,7 @@
 	@Id uniqueidentifier
 AS
 BEGIN
-	SELECT Id, Title, [Description], MainColors, ResponsiveColumns 
+	SELECT TemplateId, Title, [Description], MainColors, ResponsiveColumns, ImgPath
 	FROM dbo.Templates
-	WHERE Id = @Id;
+	WHERE TemplateId = @Id;
 END

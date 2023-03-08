@@ -9,10 +9,11 @@ namespace DataAccess.Models
 {
     public class TemplateModel
     {
-        public Guid Id { get; set; } 
+        public Guid TemplateId { get; set; } 
         public string? Title { get; set; } = string.Empty;         
         public string? Description { get; set; } = string.Empty; 
         public string? MainColors { get; set; } = string.Empty;
-        public int? ResponsiveColumns { get; set; } = 0;   
+        public int? ResponsiveColumns { get; set; } = 0;
+        public string? ImgPath { get; set; } = string.Empty;
     }
 }

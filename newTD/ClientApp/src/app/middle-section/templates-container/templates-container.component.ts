@@ -17,6 +17,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
 
   cardArray: ICard[] = [];
+  cardArrayCopy: ICard[] = [];
   backendServiceSubscription: Subscription = new Subscription();
   searchTemplateInputField = new FormControl('');
   keyboardInput$: Observable<string | null> = new Observable();
@@ -26,18 +27,16 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown.backspace', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-
     let backspaceEvent$: Subject<KeyboardEvent> = new BehaviorSubject(event);
-
     backspaceEvent$.pipe(tap(_ => this.counter++))
       .subscribe(_ => {
         if (this.counter == 1) {
-          this._backendService.listTemplates().subscribe(r => this.cardArray = r);
-          this.searchTemplateInputField.reset();          
+          // this._backendService.listTemplates().subscribe(r => this.cardArray = r);
+          this.cardArrayCopy = this.cardArray;
+          this.searchTemplateInputField.reset();
         }
         return
       });
-
   }
 
 
@@ -45,13 +44,35 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
   constructor(private _backendService: BackendService) { }
 
-  sortObjectsInCardArray(): ICard[] {
-    this._backendService.listTemplates().subscribe(result => this.cardArray = result);
+  // sortObjectsInCardArray(): ICard[] {
 
+  //   // 1 cards retreived from this.cardArray
+  //   this._backendService.listTemplates().subscribe(result => this.cardArray = result);
 
+  //   // 2. make a subscription called in ngOnInit
+  //   this.searchTemplateInputField.valueChanges
+  //     .pipe(        
+  //       switchMap(typedText => of(this.cardArray)
+  //         .pipe(
+  //           map(cardObjArray => cardObjArray
+  //             .filter(cardObj => cardObj.Title.includes(typedText ? this.capitalizeFirstLetter(typedText) : ""))),
+  //           tap(_ => this.counter = 0)
+  //         )
+
+  //       )
+
+  //     ).subscribe(value => this.cardArray = value)
+
+  //   return this.cardArray
+  // }
+
+  sortObjectsInCardArray(cardArray: ICard[]): ICard[] {   
+    this.cardArray = cardArray
+    this.cardArrayCopy = this.cardArray;
+    
     this.searchTemplateInputField.valueChanges
-      .pipe(        
-        switchMap(typedText => of(this.cardArray)
+      .pipe(
+        switchMap(typedText => of(this.cardArrayCopy)
           .pipe(
             map(cardObjArray => cardObjArray
               .filter(cardObj => cardObj.Title.includes(typedText ? this.capitalizeFirstLetter(typedText) : ""))),
@@ -60,17 +81,22 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
         )
 
-      ).subscribe(value => this.cardArray = value)
+      ).subscribe({
+        next: cards => this.cardArrayCopy = cards,
+        error: e => console.log(e),
+        complete: () => console.info('complete')
+      })
 
-    return this.cardArray
+    return this.cardArrayCopy;
   }
 
   capitalizeFirstLetter(string: string | null): string {
-    if(string) {
+    if (string) {
       return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
     return "";
   }
+
 
 
   getKeyboardInput(): Observable<any> {
@@ -79,7 +105,12 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.sortObjectsInCardArray();
+    this._backendService.listTemplates()
+      .subscribe({
+        next: result => this.sortObjectsInCardArray(result),
+        error: e => console.log(e)
+      });
+    ;
   }
 
   ngOnDestroy(): void {

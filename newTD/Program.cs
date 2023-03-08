@@ -7,7 +7,10 @@ using newTD.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+//builder.WebHost.ConfigureKestrel(serverOptions =>
+//{
+//    // ...
+//});
 // Add services to the container.
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddSingleton<ITemplateData, TemplateData>();

@@ -5,6 +5,6 @@
 	[Description] nvarchar(100),
 	[MainColors] nvarchar(30),
 	[ResponsiveColumns] int,
-	[ImgPath] nvarchar(50)
+	[ImgPath] nvarchar(50)   
 
 )

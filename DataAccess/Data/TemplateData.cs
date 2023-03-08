@@ -48,7 +48,7 @@ namespace DataAccess.Data
         {
             try
             {
-                await _db.SaveData("dbo.spTemplate_Insert", new { template.Title, template.Description, template.MainColors, template.ResponsiveColumns });
+                await _db.SaveData("dbo.spTemplate_Insert", new { template.Title, template.Description, template.MainColors, template.ResponsiveColumns, template.ImgPath });
             }
             catch (Exception ex)
             {

@@ -22,13 +22,22 @@ namespace newTD.Controllers
         }
 
         [HttpGet("ListTemplates")]
-        public async Task<IActionResult> ListTemplates()
+        public async Task<IActionResult> ListTemplates([FromQuery] string? searchString)
         {
             try
             {
-                var templates = await _templateData.GetTemplates();
+                IEnumerable<TemplateModel> templates;
+                var jsonTemplates = string.Empty;
+
+                if (string.IsNullOrWhiteSpace(searchString))
+                {
+                    templates = await _templateData.GetTemplates();
+                    jsonTemplates = JsonSerializer.Serialize(templates);
+                    return Ok(jsonTemplates);
+                }
+                templates = await _templateData.FilterTemplates(searchString);
                 _logger.LogInformation(templates.ToString());
-                var jsonTemplates = JsonSerializer.Serialize(templates);
+                jsonTemplates = JsonSerializer.Serialize(templates);
                 return Ok(jsonTemplates);
             }
             catch (Exception ex)
@@ -38,6 +47,7 @@ namespace newTD.Controllers
             }
 
         }
+
 
         [HttpGet("GetId")]
         public async Task<IActionResult> GetTemplate([FromQuery] Guid Id)
@@ -55,6 +65,7 @@ namespace newTD.Controllers
             }
 
         }
+
 
         [HttpPost("CreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateModel template)
@@ -103,7 +114,6 @@ namespace newTD.Controllers
             }
 
         }
-
 
     }
 }

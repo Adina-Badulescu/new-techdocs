@@ -15,5 +15,6 @@ namespace DataAccess.Models
         public string? MainColors { get; set; } = string.Empty;
         public int? ResponsiveColumns { get; set; } = 0;
         public string? ImgPath { get; set; } = string.Empty;
+        public int? NumberOfTemplates { get; set; } = 0;
     }
 }

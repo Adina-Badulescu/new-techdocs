@@ -4,20 +4,26 @@
       <h2>Modele recente</h2>
       <p>Cauta-ti afacerea, de exemplu... </p>
       <p>Modele disponibile: {{A.length}} </p>
+      <ng-container *ngIf="displaySpinner | async">
+        <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </ng-container>
       <nav class="navbar navbar-light justify-content-left">
         <!-- <form class="form-inline"> -->
-          <!-- <button type="button" class="btn btn-default btn-lg mr-3" id="btnSort">Cerca il tuo
+        <!-- <button type="button" class="btn btn-default btn-lg mr-3" id="btnSort">Cerca il tuo
                                     modello</button> -->
-          <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="restaurant japonez" aria-label="Cauta"
-            id="searchTemplate" [formControl]="searchTemplateInputField">
+        <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="restaurant japonez"
+          aria-label="Cauta" id="searchTemplate" [formControl]="searchTemplateInputField">
         <!-- </form> -->
       </nav>
       <ng-container *ngIf="Suggestions.length > 0">
-        <p>Sugestii</p>                 
-          <ul >
-            <li *ngFor="let card of Suggestions; trackBy: trackByFn">{{card.Title}}</li>
-          </ul>     
-          <button (click)="popS()">POP</button>    
+        <p>Sugestii</p>
+        <ul>
+          <li *ngFor="let card of Suggestions; trackBy: trackByFn">{{card.Title}}</li>
+        </ul>
       </ng-container>
     </div>
   </div>
@@ -26,9 +32,10 @@
 
 
   <div class="row">
-    <ng-container *ngFor="let card of C$ | async; trackBy: trackByFn" >
-      <div class="col-sm-4 col-lg-4 col-xs-12 my-5" >
-        <app-card-component [Title]="card.Title" [Description]="card.Description" [Id]="card.TemplateId"></app-card-component>
+    <ng-container *ngFor="let card of C$ | async; trackBy: trackByFn">
+      <div class="col-sm-4 col-lg-4 col-xs-12 my-5">
+        <app-card-component [Title]="card.Title" [Description]="card.Description"
+          [Id]="card.TemplateId"></app-card-component>
       </div>
     </ng-container>
   </div>

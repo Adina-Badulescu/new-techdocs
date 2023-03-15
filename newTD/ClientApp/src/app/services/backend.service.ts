@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, pipe } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { ICard } from 'app/middle-section/card-component/ICard.interface';
 
@@ -23,17 +23,22 @@ export class BackendService {
       )
   }
 
-  listTemplates(): Observable<ICard[]> {
-    return this.http.get<string>(`${this._baseUrl}templates/ListTemplates`)
-    .pipe(
+  
+  retryMechanism = pipe(
       retry({ count: 2, delay: 2000, resetOnSuccess: true }),
       catchError(error => of(error))
-    )
-  }
+  )
+  
 
-  getTemplate() {
-
-  }
+  listTemplates(searchString?: string | null | undefined): Observable<ICard[]> {
+    if(searchString != undefined || searchString != null) {
+      return this.http.get<string>(`${this._baseUrl}templates/ListTemplates?searchString=${searchString}`).
+      pipe(this.retryMechanism)
+    }
+    return this.http.get<string>(`${this._baseUrl}templates/ListTemplates`).
+    pipe(this.retryMechanism)
+ 
+  } 
 
 
 }

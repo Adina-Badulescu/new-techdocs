@@ -3,7 +3,7 @@
     <div class="col-sm-12 col-md-12 col-lg-12">
       <h2>Modele recente</h2>
       <p>Cauta-ti afacerea, de exemplu... </p>
-      <p>Modele care se potrivesc cautarii dvs: {{B.length}} </p>
+      <p>Modele disponibile: {{A.length}} </p>
       <nav class="navbar navbar-light justify-content-left">
         <!-- <form class="form-inline"> -->
           <!-- <button type="button" class="btn btn-default btn-lg mr-3" id="btnSort">Cerca il tuo
@@ -12,6 +12,13 @@
             id="searchTemplate" [formControl]="searchTemplateInputField">
         <!-- </form> -->
       </nav>
+      <ng-container *ngIf="Suggestions.length > 0">
+        <p>Sugestii</p>                 
+          <ul >
+            <li *ngFor="let card of Suggestions; trackBy: trackByFn">{{card.Title}}</li>
+          </ul>     
+          <button (click)="popS()">POP</button>    
+      </ng-container>
     </div>
   </div>
 
@@ -19,7 +26,7 @@
 
 
   <div class="row">
-    <ng-container *ngFor="let card of C$ | async" >
+    <ng-container *ngFor="let card of C$ | async; trackBy: trackByFn" >
       <div class="col-sm-4 col-lg-4 col-xs-12 my-5" >
         <app-card-component [Title]="card.Title" [Description]="card.Description" [Id]="card.TemplateId"></app-card-component>
       </div>

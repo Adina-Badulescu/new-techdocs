@@ -10,9 +10,9 @@ import { ComponentCommunicationService } from 'app/services/component-com.servic
 })
 export class CardComponent implements OnInit {
 
-  @Input() Title: string = "";
-  @Input() Description: string = "";
-  @Input() Id: string = "";
+  @Input() Title?: string = "";
+  @Input() Description?: string = "";
+  @Input() Id?: string = "";
   
   constructor(private componentCommunicationService: ComponentCommunicationService,
     private router: Router) { }

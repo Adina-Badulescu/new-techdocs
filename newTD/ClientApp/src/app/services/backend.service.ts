@@ -15,30 +15,25 @@ export class BackendService {
     this._baseUrl = baseUrl;
   }
 
+  retryOnError = pipe(
+    retry({ count: 2, delay: 2000, resetOnSuccess: true }),
+    catchError(error => of(error))
+  )
+
+
   searchDomain(domainQueried: string): Observable<boolean> {
     return this.http.get<boolean>(`${this._baseUrl}getdomain/Query?id=${domainQueried}`)
-      .pipe(
-        retry({ count: 2, delay: 2000, resetOnSuccess: true }),
-        catchError(error => of(error))
-      )
+      .pipe(this.retryOnError)
   }
 
-  
-  retryMechanism = pipe(
-      retry({ count: 2, delay: 2000, resetOnSuccess: true }),
-      catchError(error => of(error))
-  )
-  
 
-  listTemplates(searchString?: string | null | undefined): Observable<ICard[]> {
-    if(searchString != undefined || searchString != null) {
-      return this.http.get<string>(`${this._baseUrl}templates/ListTemplates?searchString=${searchString}`).
-      pipe(this.retryMechanism)
-    }
-    return this.http.get<string>(`${this._baseUrl}templates/ListTemplates`).
-    pipe(this.retryMechanism)
- 
-  } 
-
+  listTemplates(numberOfResults: number, searchString?: string | null | undefined): Observable<ICard[]> {
+    if(searchString != null || searchString != undefined) {     
+      return this.http.get<string>(`${this._baseUrl}templates/ListTemplates?numberOfResults=${numberOfResults}&searchString=${searchString}`).
+      pipe(this.retryOnError)
+    }    
+    return this.http.get<string>(`${this._baseUrl}templates/ListTemplates?numberOfResults=${numberOfResults}`).
+    pipe(this.retryOnError)
+  }
 
 }

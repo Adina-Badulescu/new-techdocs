@@ -14,11 +14,11 @@ namespace DataAccess.Data
             _logger = logger;
         }
 
-        public async Task<IEnumerable<TemplateModel>> GetTemplates()
+        public async Task<IEnumerable<TemplateModel>> GetTemplates(int numberOfResults, string? searchString)
         {
             try
             {
-                return await _db.LoadData<TemplateModel, dynamic>("dbo.spTemplate_getAll", new { });
+                return await _db.LoadData<TemplateModel, dynamic>("dbo.spTemplate_getAll", new { numberOfResults, searchString });
             }
             catch (Exception ex)
             {
@@ -28,19 +28,6 @@ namespace DataAccess.Data
 
         }
 
-        public async Task<IEnumerable<TemplateModel>> FilterTemplates(string searchString)
-        {
-            try
-            {
-                return await _db.LoadData<TemplateModel, dynamic>("dbo.spTemplate_Filter", new { searchString });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error in FilterTemplates() " + ex.Message);
-                throw;
-            }
-
-        }
 
         public async Task<TemplateModel?> GetTemplate(Guid id)
         {

@@ -1,6 +1,7 @@
 ﻿using DataAccess.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using Whois;
 
@@ -22,23 +23,17 @@ namespace newTD.Controllers
         }
 
         [HttpGet("ListTemplates")]
-        public async Task<IActionResult> ListTemplates([FromQuery] string? searchString)
+        public async Task<IActionResult> ListTemplates([FromQuery]int numberOfResults, string? searchString)
         {
             try
             {
                 IEnumerable<TemplateModel> templates;
-                var jsonTemplates = string.Empty;
+                var jsonTemplates = string.Empty;             
+            
 
-                if (string.IsNullOrWhiteSpace(searchString))
-                {
-                    templates = await _templateData.GetTemplates();
-                    jsonTemplates = JsonSerializer.Serialize(templates);
-                    return Ok(jsonTemplates);
-                }
-                templates = await _templateData.FilterTemplates(searchString);
-                _logger.LogInformation(templates.ToString());
+                templates = await _templateData.GetTemplates(numberOfResults, searchString);
                 jsonTemplates = JsonSerializer.Serialize(templates);
-                return Ok(jsonTemplates);
+                return Ok(jsonTemplates);   
             }
             catch (Exception ex)
             {

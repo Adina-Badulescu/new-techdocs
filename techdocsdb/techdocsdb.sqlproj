@@ -79,7 +79,6 @@
     <Build Include="dbo\StoredProcedures\spOrders_getAll.sql" />
     <Build Include="dbo\StoredProcedures\spOrders_Insert.sql" />
     <Build Include="dbo\StoredProcedures\spOrders_Update.sql" />
-    <Build Include="dbo\StoredProcedures\spTemplate_Filter.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />

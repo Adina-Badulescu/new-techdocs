@@ -3,7 +3,9 @@
     <div class="col-sm-12 col-md-12 col-lg-12">
       <h2>Modele recente</h2>
       <p>Cauta-ti afacerea, de exemplu... </p>
-      <p>Modele disponibile: {{A.length}} </p>
+      <ng-container>
+        <p>Total modele disponibile - {{totalNumberOfTemplates}}</p>
+      </ng-container>      
       <ng-container *ngIf="displaySpinner | async">
         <div class="text-center">
           <div class="spinner-border" role="status">

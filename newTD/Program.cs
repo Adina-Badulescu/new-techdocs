@@ -3,7 +3,7 @@ using DataAccess.DbAccess;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using newTD.Options;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

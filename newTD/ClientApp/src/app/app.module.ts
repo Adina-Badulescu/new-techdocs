@@ -8,7 +8,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { routes } from './routes';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CommonModule } from '@angular/common';
-import { SpinnerInterceptor } from './services/spinner-interceptor.service';
+import { SpinnerInterceptor } from './services/spinner/spinner-interceptor.service';
 import { CardComponent } from './middle-section/card-component/card.component';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';

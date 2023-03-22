@@ -1,7 +1,7 @@
 import { preserveWhitespacesDefault } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router, Navigation } from '@angular/router';
-import { ComponentCommunicationService } from 'app/services/component-com.service';
+import { ComponentCommunicationService } from 'app/services/component-communication/component-com.service';
 
 @Component({
   selector: 'app-card-component',

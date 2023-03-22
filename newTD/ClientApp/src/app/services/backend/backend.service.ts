@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, pipe } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { ICard } from 'app/middle-section/card-component/ICard.interface';
 
 
@@ -15,7 +15,7 @@ export class BackendService {
     this._baseUrl = baseUrl;
   }
 
-  retryOnError = pipe(
+  retryOnError = pipe(    
     retry({ count: 2, delay: 2000, resetOnSuccess: true }),
     catchError(error => of(error))
   )

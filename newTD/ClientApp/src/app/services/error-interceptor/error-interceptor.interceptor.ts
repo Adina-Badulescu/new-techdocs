@@ -19,7 +19,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request)
     .pipe(
       //retry(2) <-- this works but without delay
-      retry({ count: 2, delay: 2000, resetOnSuccess: true }), // <-- Infinity of retries
+      retry({ count: 3, delay: 2000, resetOnSuccess: true }), // <-- Infinity of retries
       catchError(error => of(error)),
 
     )

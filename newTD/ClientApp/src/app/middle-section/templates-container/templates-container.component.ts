@@ -1,9 +1,11 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { BackendService } from 'app/services/backend.service';
-import { BehaviorSubject, concatMap, count, debounceTime, delay, distinctUntilChanged, filter, first, from, fromEvent, iif, map, mergeMap, Observable, of, Subject, Subscription, switchMap, take, tap } from 'rxjs';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { BackendService } from 'app/services/backend/backend.service';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Observable, of, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ICard } from '../card-component/ICard.interface';
-import { SpinnerService } from 'app/services/spinner.service';
+import { SpinnerService } from 'app/services/spinner/spinner.service';
+import { GetScreenResolutionService } from 'app/services/get-screen-resolution/get-screen-resolution.service';
+import { LimitNumberOfObjectsService } from 'app/services/limit-no-objects/limit-number-of-objects.service';
 
 @Component({
   selector: 'templates-container',
@@ -12,45 +14,24 @@ import { SpinnerService } from 'app/services/spinner.service';
 })
 export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
-  
+
   totalNumberOfTemplates: number = 0;
-  Suggestions: ICard[] = [];
+  Suggestions$: Observable<ICard[]> = new Observable();
   C$: Observable<ICard[]> = new Observable();
-  numberOfObjectsInView: number = 3;
   backendServiceSubscription: Subscription = new Subscription();
   searchTemplateInputField = new FormControl('');
-  displaySpinner: BehaviorSubject<boolean> = this._spinnerService.spinnerBooleanState;
+  displaySpinner$: BehaviorSubject<boolean> = this._spinnerService.spinnerBooleanState;
+  numberOfCardsByScreenResolution$: BehaviorSubject<number> = this._numberOfObjectsInView$.setNumberOfObjectsAtngOnInit;
+  numberOfCardsByScreenResolution: number = 0;
+  numberOfSuggestionsObjectsByScreenRes$: BehaviorSubject<number> = this._numberOfObjectsInView$.setNumberOfSuggestionsObjects;
+  numberOfSuggestionsObjectsByScreenRes: number = 0;
 
-  constructor(private _backendService: BackendService, private _spinnerService: SpinnerService) { }
-
-  display_N_Objects(sourceArray: ICard[], numberOfObjects: number) {
-    let c;
-    let a: ICard[] = [];
-
-    c = of(sourceArray).pipe(
-      // From array to observable emitting items synchronously
-      mergeMap(array => array),
-      // Map each item to observable of item
-      map(item => of(item)),
-      // Flatten those observables into one,
-      // waiting for each to complete      
-      concatMap(item$ => item$),
-      take(numberOfObjects),
-      tap(x => a.push(x)),
-      // tap((item) => console.log(JSON.stringify(item)))
-    );
-    c.subscribe(() => this.C$ = of(a));
-  }
+  constructor(private _backendService: BackendService,
+    private _spinnerService: SpinnerService,
+    private _numberOfObjectsInView$: GetScreenResolutionService,
+    private _limitNumberOfObjectsService: LimitNumberOfObjectsService) { }
 
 
-
-  capitalizeFirstLetter(string: string | null): string {
-    if (string) {
-      string.toLocaleLowerCase
-      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-    }
-    return "";
-  }
 
   getKeyboardInput() {
     return this.searchTemplateInputField.valueChanges
@@ -59,12 +40,13 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       )
       .subscribe(keyBoardInput => {
-        this._backendService.listTemplates(this.numberOfObjectsInView, keyBoardInput?.toLowerCase())
+        this._backendService.listTemplates(this.numberOfCardsByScreenResolution, keyBoardInput?.toLowerCase())
           .subscribe((cardsHttpResponse: ICard[]) => {
-            this.display_N_Objects(cardsHttpResponse, this.numberOfObjectsInView);
+            this.C$ = this._limitNumberOfObjectsService.display_N_Objects(cardsHttpResponse, this.numberOfCardsByScreenResolution);
             if (keyBoardInput?.toLowerCase != null) {
-              this.Suggestions = cardsHttpResponse;
+              this.Suggestions$ = this._limitNumberOfObjectsService.display_N_Objects(cardsHttpResponse, this.numberOfSuggestionsObjectsByScreenRes);
             }
+            return;
           });
 
       });
@@ -77,7 +59,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
     keyDownEvent$.subscribe(keyEvent => {
       if (keyEvent.code === 'Backspace' || keyEvent.code === 'Escape') {
         this.searchTemplateInputField.reset();
-        this.Suggestions = [];
+        this.Suggestions$ = of([]);
       }
     });
   }
@@ -87,14 +69,18 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._backendService.listTemplates(this.numberOfObjectsInView, null)
-      .subscribe((cardsHttpResponse) => { this.display_N_Objects(cardsHttpResponse, this.numberOfObjectsInView); this.totalNumberOfTemplates = Number(cardsHttpResponse[0].NumberOfTemplates) });
-    this.getKeyboardInput();  
-      
+    this.numberOfCardsByScreenResolution$.subscribe(numberOfCards => this.numberOfCardsByScreenResolution = numberOfCards);
+    this.numberOfSuggestionsObjectsByScreenRes$.subscribe(numberOfSuggestions => this.numberOfSuggestionsObjectsByScreenRes = numberOfSuggestions);
+    this._backendService.listTemplates(this.numberOfCardsByScreenResolution, null)
+      .subscribe((cardsHttpResponse) => {
+        this.C$ = this._limitNumberOfObjectsService.display_N_Objects(cardsHttpResponse, this.numberOfCardsByScreenResolution); this.totalNumberOfTemplates = Number(cardsHttpResponse[0].NumberOfTemplates)
+      });
+    this.getKeyboardInput();
   }
 
   ngOnDestroy(): void {
     this.backendServiceSubscription.unsubscribe();
     this.getKeyboardInput().unsubscribe();
+    this.numberOfCardsByScreenResolution$.unsubscribe();
   }
 }

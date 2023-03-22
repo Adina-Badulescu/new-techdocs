@@ -6,7 +6,7 @@
       <ng-container>
         <p>Total modele disponibile - {{totalNumberOfTemplates}}</p>
       </ng-container>      
-      <ng-container *ngIf="displaySpinner | async">
+      <ng-container *ngIf="displaySpinner$ | async">
         <div class="text-center">
           <div class="spinner-border" role="status">
             <span class="sr-only"></span>
@@ -21,10 +21,10 @@
           aria-label="Cauta" id="searchTemplate" [formControl]="searchTemplateInputField">
         <!-- </form> -->
       </nav>
-      <ng-container *ngIf="Suggestions.length > 0">
+      <ng-container *ngIf="Suggestions$ | async">
         <p>Sugestii</p>
         <ul>
-          <li *ngFor="let card of Suggestions; trackBy: trackByFn">{{card.Title}}</li>
+          <li *ngFor="let card of Suggestions$ | async; trackBy: trackByFn">{{card.Title}}</li>
         </ul>
       </ng-container>
     </div>

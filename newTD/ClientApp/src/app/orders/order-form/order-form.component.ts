@@ -4,8 +4,8 @@ import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap, catchError, of, retry, Observable, Subscription, iif, finalize, Subject, BehaviorSubject } from 'rxjs';
 
-import { BackendService } from 'app/services/backend.service';
-import { SpinnerService } from 'app/services/spinner.service';
+import { BackendService } from 'app/services/backend/backend.service';
+import { SpinnerService } from 'app/services/spinner/spinner.service';
 import { ActivatedRoute } from '@angular/router';
 
 

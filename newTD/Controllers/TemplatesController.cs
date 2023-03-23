@@ -18,8 +18,6 @@ namespace newTD.Controllers
         {
             _logger = logger;
             _templateData = templateData;
-
-
         }
 
         [HttpGet("ListTemplates")]
@@ -28,8 +26,7 @@ namespace newTD.Controllers
             try
             {
                 IEnumerable<TemplateModel> templates;
-                var jsonTemplates = string.Empty;             
-            
+                var jsonTemplates = string.Empty; 
 
                 templates = await _templateData.GetTemplates(numberOfResults, searchString);
                 jsonTemplates = JsonSerializer.Serialize(templates);

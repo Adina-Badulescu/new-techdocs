@@ -35,7 +35,7 @@ namespace DataAccess.Data
             {
 
 
-                var result = await _db.LoadData<TemplateModel, dynamic>("dbo.spTemplate_Get", new { Id = id });
+                var result = await _db.LoadData<TemplateModel, Guid>("dbo.spTemplate_Get", id );
                 return result.FirstOrDefault();
             }
             catch (Exception ex)

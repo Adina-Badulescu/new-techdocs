@@ -8,6 +8,7 @@ const PROXY_CONFIG = [
     context: [
       "/getdomain",
       "/templates",
+      "/auth",
       "/swagger"
    ],
     target: target,

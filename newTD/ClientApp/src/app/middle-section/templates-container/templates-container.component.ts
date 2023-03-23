@@ -21,14 +21,14 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
   backendServiceSubscription: Subscription = new Subscription();
   searchTemplateInputField = new FormControl('');
   displaySpinner$: BehaviorSubject<boolean> = this._spinnerService.spinnerBooleanState;
-  numberOfCardsByScreenResolution$: BehaviorSubject<number> = this._numberOfObjectsInView$.setNumberOfObjectsAtngOnInit;
+  numberOfCardsByScreenResolution$: BehaviorSubject<number> = this._numberOfObjectsInViewByScrRes$.setNumberOfObjectsAtngOnInit;
   numberOfCardsByScreenResolution: number = 0;
-  numberOfSuggestionsObjectsByScreenRes$: BehaviorSubject<number> = this._numberOfObjectsInView$.setNumberOfSuggestionsObjects;
+  numberOfSuggestionsObjectsByScreenRes$: BehaviorSubject<number> = this._numberOfObjectsInViewByScrRes$.setNumberOfSuggestionsObjects;
   numberOfSuggestionsObjectsByScreenRes: number = 0;
 
   constructor(private _backendService: BackendService,
     private _spinnerService: SpinnerService,
-    private _numberOfObjectsInView$: GetScreenResolutionService,
+    private _numberOfObjectsInViewByScrRes$: GetScreenResolutionService,
     private _limitNumberOfObjectsService: LimitNumberOfObjectsService) { }
 
 
@@ -81,6 +81,6 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.backendServiceSubscription.unsubscribe();
     this.getKeyboardInput().unsubscribe();
-    this.numberOfCardsByScreenResolution$.unsubscribe();
+    // this.numberOfCardsByScreenResolution$.unsubscribe();
   }
 }

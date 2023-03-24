@@ -2,10 +2,11 @@ import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angu
 import { BackendService } from 'app/services/backend/backend.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Observable, of, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { ICard } from '../card-component/ICard.interface';
+import { ICard } from '../../models/ICard.interface';
 import { SpinnerService } from 'app/services/spinner/spinner.service';
 import { GetScreenResolutionService } from 'app/services/get-screen-resolution/get-screen-resolution.service';
 import { LimitNumberOfObjectsService } from 'app/services/limit-no-objects/limit-number-of-objects.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'templates-container',
@@ -26,10 +27,13 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
   numberOfSuggestionsObjectsByScreenRes$: BehaviorSubject<number> = this._numberOfObjectsInViewByScrRes$.setNumberOfSuggestionsObjects;
   numberOfSuggestionsObjectsByScreenRes: number = 0;
 
-  constructor(private _backendService: BackendService,
+
+  constructor(
+    private _backendService: BackendService,
     private _spinnerService: SpinnerService,
     private _numberOfObjectsInViewByScrRes$: GetScreenResolutionService,
-    private _limitNumberOfObjectsService: LimitNumberOfObjectsService) { }
+    private _limitNumberOfObjectsService: LimitNumberOfObjectsService,
+    ) { }
 
 
 
@@ -81,6 +85,6 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.backendServiceSubscription.unsubscribe();
     this.getKeyboardInput().unsubscribe();
-    // this.numberOfCardsByScreenResolution$.unsubscribe();
   }
+
 }

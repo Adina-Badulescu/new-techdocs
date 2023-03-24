@@ -6,6 +6,10 @@ export const routes = [
     {path: '', component: HomeComponent}
     ,
     {
+        path: 'admin',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+    },
+    {
         path: 'orders',
         loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
     },

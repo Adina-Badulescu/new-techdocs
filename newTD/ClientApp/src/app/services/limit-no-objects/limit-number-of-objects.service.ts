@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICard } from 'app/middle-section/card-component/ICard.interface';
+import { ICard } from 'app/models/ICard.interface';
 import { concatMap, map, mergeMap, Observable, of, take, tap } from 'rxjs';
 
 @Injectable({

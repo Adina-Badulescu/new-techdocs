@@ -6,7 +6,7 @@ import { ICard } from '../../models/ICard.interface';
 import { SpinnerService } from 'app/services/spinner/spinner.service';
 import { GetScreenResolutionService } from 'app/services/get-screen-resolution/get-screen-resolution.service';
 import { LimitNumberOfObjectsService } from 'app/services/limit-no-objects/limit-number-of-objects.service';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'templates-container',
@@ -29,7 +29,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private _backendService: BackendService,
+    private _backendService: BackendService,    
     private _spinnerService: SpinnerService,
     private _numberOfObjectsInViewByScrRes$: GetScreenResolutionService,
     private _limitNumberOfObjectsService: LimitNumberOfObjectsService,

@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "newTD"
+  "defaultProject": "newTD",
+  "cli": {
+    "analytics": false
+  }
 }

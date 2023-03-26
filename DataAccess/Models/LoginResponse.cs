@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public class UserRegister
+    public class LoginResponse
     {
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;   
     }
 }

@@ -79,6 +79,11 @@
     <Build Include="dbo\StoredProcedures\spOrders_getAll.sql" />
     <Build Include="dbo\StoredProcedures\spOrders_Insert.sql" />
     <Build Include="dbo\StoredProcedures\spOrders_Update.sql" />
+    <Build Include="Tables\Users.sql" />
+    <Build Include="dbo\StoredProcedures\spUser_Create.sql" />
+    <Build Include="dbo\StoredProcedures\spUser_Get.sql" />
+    <Build Include="dbo\StoredProcedures\spUser_GetAll.sql" />
+    <Build Include="dbo\StoredProcedures\spUser_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />

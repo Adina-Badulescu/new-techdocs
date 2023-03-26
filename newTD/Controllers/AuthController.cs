@@ -16,7 +16,7 @@ namespace newTD.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private readonly IConfiguration _configuration;
-        private static User _user = new User();
+        private static UserModel _user = new UserModel();
         private readonly IUserService _userService;
 
         public AuthController(ILogger<AuthController> logger, IConfiguration configuration, IUserService userService)
@@ -28,16 +28,16 @@ namespace newTD.Controllers
 
         
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> Register(UserRegister request)
+        public async Task<ActionResult<UserModel>> Register(LoginModel request)
         {
             try
             {
-                CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                _user.Username = request.UserName;
+                CreatePasswordHash(request.Email, out byte[] passwordHash, out byte[] passwordSalt);
+                _user.Email = request.Email;
                 _user.PasswordHash = passwordHash;
                 _user.PasswordSalt = passwordSalt;
 
-                return Ok("");
+                return Ok(_user);
             }
             catch (Exception ex)
             {
@@ -48,11 +48,11 @@ namespace newTD.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<string>> Login(UserRegister request)
+        public async Task<ActionResult<string>> Login(LoginModel request)
         {
             try
             {
-                if (_user.Username != request.UserName)
+                if (_user.Email != request.Email)
                 {
                     return BadRequest("User or Password Wrong");
                 }
@@ -117,11 +117,11 @@ namespace newTD.Controllers
             return computedHash.SequenceEqual(passwordHash);
         }
 
-        private string CreateToken(User _user)
+        private string CreateToken(UserModel _user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.Username),
+                new Claim(ClaimTypes.Name, _user.Email),
                 new Claim(ClaimTypes.Role, "Admin")
             };
 

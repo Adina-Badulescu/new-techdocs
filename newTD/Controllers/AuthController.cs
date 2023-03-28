@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using newTD.UserService;
+using Microsoft.Extensions.Logging;
+using System.Text;
 
 namespace newTD.Controllers
 {    
@@ -18,12 +20,14 @@ namespace newTD.Controllers
         private readonly IConfiguration _configuration;
         private static UserModel _user = new UserModel();
         private readonly IUserService _userService;
+        private readonly IUserData _userData;
 
-        public AuthController(ILogger<AuthController> logger, IConfiguration configuration, IUserService userService)
+        public AuthController(ILogger<AuthController> logger, IConfiguration configuration, IUserService userService, IUserData userData)
         {
             _logger = logger;
             _configuration = configuration;            
             _userService = userService;
+            _userData = userData;
         }
 
         
@@ -32,16 +36,32 @@ namespace newTD.Controllers
         {
             try
             {
-                CreatePasswordHash(request.Email, out byte[] passwordHash, out byte[] passwordSalt);
-                _user.Email = request.Email;
-                _user.PasswordHash = passwordHash;
-                _user.PasswordSalt = passwordSalt;
+                
+                if(ModelState.IsValid)
+                {
+                   
+                    //order of columns in db
+                    //Email, PasswordHash, PasswordSalt, RefreshToken, TokenCreated, TokenExpires
+                    CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                    _user.Username = request.Username;
+                    _user.PasswordHash = passwordHash;
+                    _user.PasswordSalt = passwordSalt;
+                    _user.RefreshToken = string.Empty;
+                    _user.TokenCreated = DateTime.UtcNow;
+                    _user.TokenExpires = DateTime.UtcNow;
+                    _logger.LogInformation("USER: " + System.Text.Encoding.UTF8.GetString(_user.PasswordHash, 0, _user.PasswordHash.Length) + " " + System.Text.Encoding.UTF8.GetString(_user.PasswordSalt, 0, _user.PasswordSalt.Length));
+                    await _userData.CreateUser(_user);
+                   
 
-                return Ok(_user);
+                    return Ok(new AuthResponse(true, string.Empty));
+                }
+
+                return BadRequest(new AuthResponse(false, "An Error occured in creating a new user"));
+                
             }
             catch (Exception ex)
             {
-                _logger.LogError("error into Template Controller on Register() " + ex.Message);
+                _logger.LogError("error into Auth Controller on Register() " + ex.Message);
                 throw;
             }
 
@@ -52,12 +72,15 @@ namespace newTD.Controllers
         {
             try
             {
-                if (_user.Email != request.Email)
+
+                if (_user.Username != request.Username)
                 {
-                    return BadRequest("User or Password Wrong");
+                    
+                    return BadRequest("Password Wrong");
                 }
                 if (!VerifyPasswordHash(request.Password, _user.PasswordHash, _user.PasswordSalt))
                 {
+                    //_logger.LogInformation("LOGIN: " + System.Text.Encoding.UTF8.GetString(_user.PasswordHash, 0, _user.PasswordHash.Length) + " " + System.Text.Encoding.UTF8.GetString(_user.PasswordSalt, 0, _user.PasswordSalt.Length));
                     return BadRequest("User or Password Wrong");
                 }
 
@@ -69,7 +92,7 @@ namespace newTD.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("error into Template Controller on Login() " + ex.Message);
+                _logger.LogError("error into Auth Controller on Login() " + ex.Message);
                 throw;
             }
 
@@ -105,23 +128,28 @@ namespace newTD.Controllers
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            using var hmac = new HMACSHA512();
-            passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using var hmac = new HMACSHA512(passwordSalt);
-            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            return computedHash.SequenceEqual(passwordHash);
+            _logger.LogInformation(password);
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(passwordHash);
+            }
         }
 
         private string CreateToken(UserModel _user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.Email),
+                new Claim(ClaimTypes.Name, _user.Username),
                 new Claim(ClaimTypes.Role, "Admin")
             };
 
@@ -163,6 +191,8 @@ namespace newTD.Controllers
             _user.TokenCreated = newRefreshToken.Created;
             _user.TokenExpires = newRefreshToken.Expires;
         }
+
+
 
     }
 }

@@ -2,6 +2,6 @@
 		
 AS
 BEGIN
-	SELECT UserId, Email, PasswordHash
+	SELECT UserId, Username, PasswordHash
 	FROM dbo.Users	
 END

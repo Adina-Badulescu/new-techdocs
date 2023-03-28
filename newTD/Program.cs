@@ -1,9 +1,8 @@
 global using DataAccess.Data;
 using DataAccess.DbAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+
+
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using newTD.UserService;
@@ -16,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddSingleton<ITemplateData, TemplateData>();
+builder.Services.AddSingleton<IUserData, UserData>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
@@ -29,7 +29,9 @@ object value = builder.Services.AddAuthentication(JwtBearerDefaults.Authenticati
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            RequireExpirationTime = false,
+            ValidateLifetime = true,
         };
     });
 builder.Services.AddEndpointsApiExplorer();

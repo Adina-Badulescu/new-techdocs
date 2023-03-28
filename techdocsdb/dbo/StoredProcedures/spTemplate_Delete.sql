@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spTemplates_Delete]
+﻿CREATE PROCEDURE [dbo].[spTemplate_Delete]
 	@Id uniqueidentifier
 AS
 BEGIN

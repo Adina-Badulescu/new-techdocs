@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_Get]
-	@Email NVARCHAR(60)	
+	@Username NVARCHAR(30)	
 AS
 BEGIN
-	SELECT UserId, Email, PasswordHash
+	SELECT UserId, Username, PasswordHash, PasswordSalt, TokenCreated, RefreshToken, TokenExpires
 	FROM dbo.Users
-	WHERE Email = @Email;
+	WHERE Username = @Username;
 END

@@ -1,6 +1,10 @@
 ﻿CREATE TABLE [dbo].[Users]
 (
 	[UserId] UNIQUEIDENTIFIER NOT NULL  PRIMARY KEY DEFAULT NEWID(),
-	[PasswordHash] NVARCHAR(MAX) NOT NULL,
-	[Email] NVARCHAR(60) NOT NULL UNIQUE
+	[PasswordHash] VARBINARY(MAX) NOT NULL,
+	[Username] NVARCHAR(30) NOT NULL UNIQUE, 
+    [PasswordSalt] VARBINARY(MAX) NOT NULL, 
+    [TokenCreated] DATETIME NULL , 
+    [RefreshToken] NVARCHAR(256) NULL, 
+    [TokenExpires] DATETIME NULL 
 )

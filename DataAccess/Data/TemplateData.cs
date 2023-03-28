@@ -71,11 +71,11 @@ namespace DataAccess.Data
             }
         }
 
-        public async Task DeleteTemplate(Guid id)
+        public async Task DeleteTemplate(Guid Id)
         {
             try
             {
-                await _db.SaveData("dbo.spTemplate_Delete", new { Id = id });
+                await _db.SaveData("dbo.spTemplate_Delete", new { Id });
             }
             catch (Exception ex)
             {

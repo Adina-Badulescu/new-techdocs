@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    public class UserData
+    public class UserData : IUserData
+
     {
         private readonly ISqlDataAccess _db;
         private readonly ILogger _logger;
@@ -19,11 +20,11 @@ namespace DataAccess.Data
             _logger = logger;
         }
 
-        public async Task<UserModel?> GetUser(string email)
+        public async Task<UserModel?> GetUser(string username)
         {
             try
             {
-                var result = await _db.LoadData<UserModel, string>("dbo.spUser_Get", email);
+                var result = await _db.LoadData<UserModel, dynamic>("dbo.spUser_Get", new { username });
                 return result.FirstOrDefault();
             }
             catch (Exception ex)
@@ -37,7 +38,7 @@ namespace DataAccess.Data
         {
             try
             {
-                await _db.SaveData("dbo.spUser_Create", new { user.Email, user.PasswordHash });
+                await _db.SaveData("dbo.spUser_Create", new { user.Username, user.PasswordHash, user.PasswordSalt, user.RefreshToken, user.TokenCreated, user.TokenExpires });
             }
             catch (Exception ex)
             {
@@ -63,7 +64,7 @@ namespace DataAccess.Data
         {
             try
             {
-                await _db.SaveData("dbo.spUser_Delete", new { email = email });
+                await _db.SaveData("dbo.spUser_Delete", new { email });
             }
             catch (Exception ex)
             {

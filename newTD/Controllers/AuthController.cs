@@ -16,18 +16,18 @@ namespace newTD.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly ILogger<AuthController> _logger;
-        private readonly IConfiguration _configuration;
-        private static UserModel _user = new UserModel();
+        private readonly ILogger<AuthController> _logger;        
+        //private UserModel _user = new();
+        private UserModel _user;
         private readonly IUserService _userService;
         private readonly IUserData _userData;
 
-        public AuthController(ILogger<AuthController> logger, IConfiguration configuration, IUserService userService, IUserData userData)
+        public AuthController(ILogger<AuthController> logger, IUserService userService, IUserData userData, UserModel userModel)
         {
-            _logger = logger;
-            _configuration = configuration;            
+            _logger = logger;                       
             _userService = userService;
             _userData = userData;
+            _user = userModel;
         }
 
         
@@ -39,19 +39,17 @@ namespace newTD.Controllers
                 
                 if(ModelState.IsValid)
                 {
-                   
-                    //order of columns in db
-                    //Email, PasswordHash, PasswordSalt, RefreshToken, TokenCreated, TokenExpires
-                    CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                    
+                    _userService.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
                     _user.Username = request.Username;
                     _user.PasswordHash = passwordHash;
                     _user.PasswordSalt = passwordSalt;
                     _user.RefreshToken = string.Empty;
                     _user.TokenCreated = DateTime.UtcNow;
                     _user.TokenExpires = DateTime.UtcNow;
-                    _logger.LogInformation("USER: " + System.Text.Encoding.UTF8.GetString(_user.PasswordHash, 0, _user.PasswordHash.Length) + " " + System.Text.Encoding.UTF8.GetString(_user.PasswordSalt, 0, _user.PasswordSalt.Length));
-                    await _userData.CreateUser(_user);
                    
+                    await _userData.CreateUser(_user);
+                    _logger.LogInformation("_user.Username 1 " + _user.Username);
 
                     return Ok(new AuthResponse(true, string.Empty));
                 }
@@ -75,18 +73,20 @@ namespace newTD.Controllers
 
                 if (_user.Username != request.Username)
                 {
-                    
-                    return BadRequest("Password Wrong");
+                    _logger.LogInformation("_user.Username" + _user.Username);
+                    _logger.LogInformation("request.Username" + request.Username);                    
+                    _logger.LogInformation("request.Password" + request.Password);
+                    return BadRequest("Wrong Username");
                 }
-                if (!VerifyPasswordHash(request.Password, _user.PasswordHash, _user.PasswordSalt))
+                if (!_userService.VerifyPasswordHash(request.Password, _user.PasswordHash, _user.PasswordSalt))
                 {
                     //_logger.LogInformation("LOGIN: " + System.Text.Encoding.UTF8.GetString(_user.PasswordHash, 0, _user.PasswordHash.Length) + " " + System.Text.Encoding.UTF8.GetString(_user.PasswordSalt, 0, _user.PasswordSalt.Length));
                     return BadRequest("User or Password Wrong");
                 }
 
-                string token = CreateToken(_user);
-                var refreshToken = GenerateRefreshToken();
-                SetRefreshToken(refreshToken);
+                string token = _userService.CreateToken(_user);
+                var refreshToken = _userService.GenerateRefreshToken();
+                _userService.SetRefreshToken(refreshToken);
 
                 return Ok(token);
             }
@@ -112,9 +112,9 @@ namespace newTD.Controllers
                 return Unauthorized("Token expired.");
             }
 
-            string token = CreateToken(_user);
-            var newRefreshToken = GenerateRefreshToken();
-            SetRefreshToken(newRefreshToken);
+            string token = _userService.CreateToken(_user);
+            var newRefreshToken = _userService.GenerateRefreshToken();
+            _userService.SetRefreshToken(newRefreshToken);
 
             return Ok(token);
         }
@@ -126,73 +126,19 @@ namespace newTD.Controllers
             return Ok(username);
         }
 
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
+        //private void SetRefreshToken(RefreshToken newRefreshToken)
+        //{
+        //    var cookieOptions = new CookieOptions
+        //    {
+        //        HttpOnly = true,
+        //        Expires = newRefreshToken.Expires
+        //    };
+        //    Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
 
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            _logger.LogInformation(password);
-            using (var hmac = new HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-        }
-
-        private string CreateToken(UserModel _user)
-        {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, _user.Username),
-                new Claim(ClaimTypes.Role, "Admin")
-            };
-
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: creds);
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
-        }
-        private RefreshToken GenerateRefreshToken()
-        {
-            var refreshToken = new RefreshToken
-            {
-                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Expires = DateTime.Now.AddDays(7),
-                Created = DateTime.Now
-            };
-
-            return refreshToken;
-        }
-
-        private void SetRefreshToken(RefreshToken newRefreshToken)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = newRefreshToken.Expires
-            };
-            Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
-
-            _user.RefreshToken = newRefreshToken.Token;
-            _user.TokenCreated = newRefreshToken.Created;
-            _user.TokenExpires = newRefreshToken.Expires;
-        }
-
-
+        //    _user.RefreshToken = newRefreshToken.Token;
+        //    _user.TokenCreated = newRefreshToken.Created;
+        //    _user.TokenExpires = newRefreshToken.Expires;
+        //}
 
     }
 }

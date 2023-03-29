@@ -1,5 +1,6 @@
 global using DataAccess.Data;
 using DataAccess.DbAccess;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
@@ -17,6 +18,7 @@ builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddSingleton<ITemplateData, TemplateData>();
 builder.Services.AddSingleton<IUserData, UserData>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSingleton<UserModel>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 

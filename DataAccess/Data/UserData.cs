@@ -38,6 +38,7 @@ namespace DataAccess.Data
         {
             try
             {
+                _logger.LogInformation("_user.Username" + user.Username);                
                 await _db.SaveData("dbo.spUser_Create", new { user.Username, user.PasswordHash, user.PasswordSalt, user.RefreshToken, user.TokenCreated, user.TokenExpires });
             }
             catch (Exception ex)

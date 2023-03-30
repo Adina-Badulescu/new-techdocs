@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_Delete]
-	@Username NVARCHAR(60)
+	@Email NVARCHAR(30)
 AS
 BEGIN
 	DELETE  
 	FROM dbo.Users
-	WHERE Username = @Username;
+	WHERE Email = @Email;
 END

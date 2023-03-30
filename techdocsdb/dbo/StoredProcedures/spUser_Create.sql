@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_Create]
-	@Username NVARCHAR(60),
+	@Email NVARCHAR(30),
 	@PasswordHash VARBINARY(MAX),
 	@PasswordSalt VARBINARY(MAX),
 	@RefreshToken NVARCHAR(256),
@@ -9,6 +9,6 @@ AS
 BEGIN
 	SET @TokenCreated = GETDATE()
 	SET @TokenExpires = DATEADD(DD, 1, GETDATE())
-	INSERT INTO dbo.Users(Username, PasswordHash, PasswordSalt, RefreshToken, TokenCreated, TokenExpires)
-	VALUES (@Username, @PasswordHash, @PasswordSalt, @RefreshToken, @TokenCreated, @TokenExpires);
+	INSERT INTO dbo.Users(Email, PasswordHash, PasswordSalt, RefreshToken, TokenCreated, TokenExpires)
+	VALUES (@Email, @PasswordHash, @PasswordSalt, @RefreshToken, @TokenCreated, @TokenExpires);
 END

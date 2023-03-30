@@ -8,13 +8,13 @@ namespace DataAccess.Models
 {
     public class AuthResponse
     {
-        public AuthResponse(bool result, string errors)
+        public AuthResponse(bool result, string errors, string token)
         {
-            //Token = token; 
+            Token = token;
             Result = result;
             Errors = errors;
         }
-        //public string Token { get; set; } = string.Empty;
+        public string Token { get; set; } = string.Empty;
         public bool Result { get; set; }
         public string Errors { get; set; } = string.Empty;
     }

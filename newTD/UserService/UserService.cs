@@ -30,7 +30,7 @@ namespace newTD.UserService
             var result = string.Empty;
             if (_httpContextAccessor.HttpContext != null)
             {
-                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email);
             }
             return result;
         }
@@ -46,7 +46,7 @@ namespace newTD.UserService
 
         public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            _logger.LogInformation(password);
+            //_logger.LogInformation(password);
             using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
@@ -58,7 +58,7 @@ namespace newTD.UserService
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.Username),
+                new Claim(ClaimTypes.Email, _user.Email),
                 new Claim(ClaimTypes.Role, "Admin")
             };
 
@@ -80,7 +80,7 @@ namespace newTD.UserService
             var refreshToken = new RefreshToken
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Expires = DateTime.Now.AddDays(7),
+                Expires = DateTime.Now.AddHours(3),
                 Created = DateTime.Now
             };
 

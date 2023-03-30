@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using DataAccess.Models;
-using System.Security.Cryptography;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using newTD.UserService;
-using Microsoft.Extensions.Logging;
-using System.Text;
+using Tokens;
+
 
 namespace newTD.Controllers
 {    
@@ -41,7 +36,7 @@ namespace newTD.Controllers
                 {
                     
                     _userService.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                    _user.Username = request.Username;
+                    _user.Email = request.Email;
                     _user.PasswordHash = passwordHash;
                     _user.PasswordSalt = passwordSalt;
                     _user.RefreshToken = string.Empty;
@@ -49,12 +44,12 @@ namespace newTD.Controllers
                     _user.TokenExpires = DateTime.UtcNow;
                    
                     await _userData.CreateUser(_user);
-                    _logger.LogInformation("_user.Username 1 " + _user.Username);
+                    var token = _userService.CreateToken(_user);                    
 
-                    return Ok(new AuthResponse(true, string.Empty));
+                    return Ok(new AuthResponse(true, string.Empty, token));
                 }
 
-                return BadRequest(new AuthResponse(false, "An Error occured in creating a new user"));
+                return BadRequest(new AuthResponse(false, "An Error occured in creating a new user", string.Empty));
                 
             }
             catch (Exception ex)
@@ -69,26 +64,30 @@ namespace newTD.Controllers
         public async Task<ActionResult<string>> Login(LoginModel request)
         {
             try
-            {
-
-                if (_user.Username != request.Username)
+            {   if(ModelState.IsValid)
                 {
-                    _logger.LogInformation("_user.Username" + _user.Username);
-                    _logger.LogInformation("request.Username" + request.Username);                    
-                    _logger.LogInformation("request.Password" + request.Password);
-                    return BadRequest("Wrong Username");
-                }
-                if (!_userService.VerifyPasswordHash(request.Password, _user.PasswordHash, _user.PasswordSalt))
-                {
-                    //_logger.LogInformation("LOGIN: " + System.Text.Encoding.UTF8.GetString(_user.PasswordHash, 0, _user.PasswordHash.Length) + " " + System.Text.Encoding.UTF8.GetString(_user.PasswordSalt, 0, _user.PasswordSalt.Length));
-                    return BadRequest("User or Password Wrong");
+                    UserModel userData = await _userData.GetUser(request.Email);                    
+                    
+                    if (userData?.ToString() is not null)
+                    {
+                        if (userData.Email != request.Email)
+                        {
+                            return BadRequest(new AuthResponse(false, "Wrong Credentials", string.Empty));
+                        }
+                        if (!_userService.VerifyPasswordHash(request.Password, userData.PasswordHash, userData.PasswordSalt))
+                        {                            
+                            return BadRequest(new AuthResponse(false, "Wrong Credentials", string.Empty));
+                        }
+
+                        string token = _userService.CreateToken(userData);
+                        var refreshToken = _userService.GenerateRefreshToken();
+                        _userService.SetRefreshToken(refreshToken);
+
+                        return Ok(new AuthResponse(true, string.Empty, token));
+                    }
                 }
 
-                string token = _userService.CreateToken(_user);
-                var refreshToken = _userService.GenerateRefreshToken();
-                _userService.SetRefreshToken(refreshToken);
-
-                return Ok(token);
+                return BadRequest(new AuthResponse(false, "User or Email not provided", string.Empty));
             }
             catch (Exception ex)
             {
@@ -105,40 +104,27 @@ namespace newTD.Controllers
 
             if (!_user.RefreshToken.Equals(refreshToken))
             {
-                return Unauthorized("Invalid Refresh Token.");
+                return Unauthorized(new AuthResponse(false, "Invalid Refresh Token.", string.Empty));
             }
             else if (_user.TokenExpires < DateTime.Now)
             {
-                return Unauthorized("Token expired.");
+                return Unauthorized(new AuthResponse(false, "Token expired.", string.Empty));
             }
 
             string token = _userService.CreateToken(_user);
             var newRefreshToken = _userService.GenerateRefreshToken();
             _userService.SetRefreshToken(newRefreshToken);
 
-            return Ok(token);
+            return Ok(new AuthResponse(true, string.Empty, token));
         }
 
-        [HttpGet, Authorize]
+        [HttpGet("GetUser"), Authorize]
         public ActionResult<string> GetMe()
         {
             var username = _userService.GetMyName();
             return Ok(username);
         }
 
-        //private void SetRefreshToken(RefreshToken newRefreshToken)
-        //{
-        //    var cookieOptions = new CookieOptions
-        //    {
-        //        HttpOnly = true,
-        //        Expires = newRefreshToken.Expires
-        //    };
-        //    Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
-
-        //    _user.RefreshToken = newRefreshToken.Token;
-        //    _user.TokenCreated = newRefreshToken.Created;
-        //    _user.TokenExpires = newRefreshToken.Expires;
-        //}
 
     }
 }

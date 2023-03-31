@@ -1,8 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AccountService } from 'app/services/account/account.service';
+import { AuthService } from 'app/services/auth/auth.service';
 import { first } from 'rxjs';
 
 @Component({
@@ -17,7 +16,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
 
   constructor(
-      private _accountService: AccountService,
+      private _authService: AuthService,
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
@@ -47,7 +46,7 @@ export class LoginComponent implements OnInit {
       }
 
       this.loading = true;
-      this._accountService.login(this.f.email.value, this.f.password.value)
+      this._authService.login(this.f.email.value, this.f.password.value)
           .pipe(first())
           .subscribe({
               next: () => {

@@ -20,11 +20,11 @@ namespace DataAccess.Data
             _logger = logger;
         }
 
-        public async Task<UserModel?> GetUser(string username)
+        public async Task<UserModel?> GetUser(string Email)
         {
             try
             {
-                var result = await _db.LoadData<UserModel, dynamic>("dbo.spUser_Get", new { username });
+                var result = await _db.LoadData<UserModel, dynamic>("dbo.spUser_Get", new { Email });
                 return result.FirstOrDefault();
             }
             catch (Exception ex)

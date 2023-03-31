@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { AccountService } from '../../services/account/account.service';
+import { AccountService } from '../../../services/account/account.service';
+import { AuthService } from 'app/services/auth/auth.service';
 
 @Component({ templateUrl: 'register.component.html' })
 export class RegisterComponent implements OnInit {
@@ -11,7 +12,7 @@ export class RegisterComponent implements OnInit {
     submitted = false;
 
     constructor(
-        private _accountService: AccountService,
+        private _authService: AuthService,
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
@@ -41,7 +42,7 @@ export class RegisterComponent implements OnInit {
         }
 
         this.loading = true;
-        this._accountService.register(this.form.value)
+        this._authService.register(this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => {

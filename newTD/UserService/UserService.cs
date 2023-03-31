@@ -1,5 +1,6 @@
 ﻿using Azure;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,7 @@ namespace newTD.UserService
         private readonly IConfiguration _configuration;
         private readonly ILogger<UserService> _logger;
         private UserModel _user;
+
         public UserService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<UserService> logger, UserModel user)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -54,12 +56,12 @@ namespace newTD.UserService
             }
         }
 
-        public string CreateToken(UserModel _user)
+        public string CreateToken(UserModel? user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, _user.Email),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, Role.User.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));

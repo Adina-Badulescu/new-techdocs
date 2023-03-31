@@ -11,6 +11,7 @@ namespace newTD.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
+
         private readonly ILogger<AuthController> _logger;        
         //private UserModel _user = new();
         private UserModel _user;

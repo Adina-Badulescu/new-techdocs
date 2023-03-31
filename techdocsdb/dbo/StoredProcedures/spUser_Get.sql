@@ -2,7 +2,7 @@
 	@Email NVARCHAR(30)	
 AS
 BEGIN
-	SELECT UserId, Email, PasswordHash, PasswordSalt, TokenCreated, RefreshToken, TokenExpires
+	SELECT UserId, Email, PasswordHash, PasswordSalt, TokenCreated, RefreshToken, TokenExpires, IsAdmin
 	FROM dbo.Users
 	WHERE Email = @Email;
 END

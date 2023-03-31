@@ -6,5 +6,6 @@
     [PasswordSalt] VARBINARY(MAX) NOT NULL, 
     [TokenCreated] DATETIME NULL , 
     [RefreshToken] NVARCHAR(256) NULL, 
-    [TokenExpires] DATETIME NULL 
+    [TokenExpires] DATETIME NULL, 
+    [IsAdmin] BIT NULL 
 )

@@ -9,5 +9,12 @@ namespace DataAccess.Models
         public string? RefreshToken { get; set; } = string.Empty;
         public DateTime TokenCreated { get; set; } 
         public DateTime TokenExpires { get; set; }
+        public int? IsAdmin { get; set; } = (int)Role.User;
     }
+    public enum Role
+    {
+        User = 0,
+        Admin = 1
+    }
+
 }

@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { TemplatesContainerComponent } from './middle-section/templates-container/templates-container.component';
-import { CarouselComponent } from './carousel/carousel.component';
+import { CarouselComponent } from './home/carousel/carousel.component';
 import { routes } from './routes';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,9 @@ import { SpinnerInterceptor } from './services/spinner/spinner-interceptor.servi
 import { CardComponent } from './middle-section/card-component/card.component';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NavbarComponent } from './home/navbar/navbar.component';
+import { LoginComponent } from './home/navbar/login/login.component';
+import { RegisterComponent } from './home/navbar/register/register.component';
 // import { ErrorInterceptor } from './services/error-interceptor.interceptor';
 
 
@@ -23,6 +26,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     CarouselComponent,
     NotFoundComponent,
     CardComponent,
+    NavbarComponent,
+    LoginComponent,
+    RegisterComponent
     
   ],
   imports: [

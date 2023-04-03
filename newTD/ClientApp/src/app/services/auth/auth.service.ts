@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IAuthResponse } from 'app/models/IAuthResponse';
-import { User } from 'oidc-client';
+import { IUser } from 'app/models/IUser';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
 @Injectable({
@@ -11,45 +11,63 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 export class AuthService {
 
   private _baseUrl: string = '';
-  private readonly TOKEN_NAME: string = 'auth_token'
-  private _tokenSubject: BehaviorSubject<IAuthResponse | null>;
-  public token: Observable<IAuthResponse | null>;
-  private _user: User | null;
+  private readonly TOKEN_NAME: string = 'auth_token';
+  public _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  // private _tokenSubject: BehaviorSubject<User | null>;
+  // public token: Observable<User | null>;
+  public user: IUser | string | null;
   userClaims!: IAuthResponse;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: Router) {
-    this._tokenSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(this.TOKEN_NAME)!));
-    this.token = this._tokenSubject.asObservable();
-    this._user = this.getUserClaims(this.token)
-    this._baseUrl = baseUrl;
+    this._baseUrl = baseUrl;    
+    this._isLoggedIn$.next(!!this.token);    
+    // if(!this.token) {
+    //   this.router.navigate(['/login']);
+    // }
+    this.user = this.token;
+    // this._tokenSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(this.TOKEN_NAME)!));
+    // this.token = this._tokenSubject.asObservable();
+    
+    
   }
 
-  public get tokenValue() {
-    return this._tokenSubject.value;
+  private getUserFromTokenClaim(authResponse: IAuthResponse): any{
+    if (!authResponse) {
+      return null;
+    }
+    console.log(JSON.parse(atob(authResponse.token.split('.')[1])))
+    return JSON.parse(atob(authResponse.token.split('.')[1])) as IUser;
   }
 
-  login(email: string, password: string) {
+  private get token(): string | null {
+    return localStorage.getItem(this.TOKEN_NAME);
+  }
+
+  login(email: string, password: string): Observable<void> {
     return this.http.post<IAuthResponse>(`${this._baseUrl}auth/Login`, { email, password })
       .pipe(map(authResponse => {
+        if (authResponse.result != true) {
+          this._isLoggedIn$.next(false);
+        }
+        this._isLoggedIn$.next(true);
         localStorage.setItem(this.TOKEN_NAME, JSON.stringify(authResponse.token));
-        this.userClaims = this.getUserClaims(authResponse);
-        return this._tokenSubject.next(authResponse);
+        this.user = this.getUserFromTokenClaim(authResponse);
+        
       }));
   }
 
-  private getUserClaims(authResponse: IAuthResponse): IAuthResponse {
-    return JSON.parse(atob(authResponse?.token?.split('.')[1])) as IAuthResponse;
-  }
 
-  logout() {
-    // remove user from local storage and set current user to null
+
+  logout(): void {    
     localStorage.removeItem(this.TOKEN_NAME );
-    this._tokenSubject.next(null);
-    this.router.navigate(['/auth/Login']);
+    this._isLoggedIn$.next(false);
+    this.router.navigate(['']);
   }
 
-  register(user: User) {
-    return this.http.post(`${this._baseUrl}auth/Register`, user);
+  register(user: IUser) {
+    return this.http.post(`${this._baseUrl}register`, user);
   }
+
+
 
 }

@@ -3,6 +3,7 @@ using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using newTD.Controllers;
 using System.IdentityModel.Tokens.Jwt;
@@ -58,25 +59,57 @@ namespace newTD.UserService
 
         public string CreateToken(UserModel? user)
         {
-            List<Claim> claims = new List<Claim>
+            List<Claim> claims;
+            SymmetricSecurityKey key;
+            SigningCredentials creds;
+            JwtSecurityToken token;
+            string jwt;
+
+            if (user?.IsAdmin == 1)
             {
+                claims = new List<Claim>
+                {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, Role.User.ToString())
+                new Claim(ClaimTypes.Role, Role.Admin.ToString())
+                };
+
+                key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+                creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+                token = new JwtSecurityToken(
+                        claims: claims,
+                        expires: DateTime.Now.AddHours(1),
+                        signingCredentials: creds);
+
+                jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return jwt;
+            }
+
+            claims = new List<Claim>
+            {
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, Role.User.ToString())
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
-            var token = new JwtSecurityToken(
+            creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            token = new JwtSecurityToken(
                     claims: claims,
                     expires: DateTime.Now.AddHours(1),
                     signingCredentials: creds);
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
         }
+
+
+
         public RefreshToken GenerateRefreshToken()
         {
             var refreshToken = new RefreshToken

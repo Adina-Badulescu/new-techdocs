@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, pipe } from 'rxjs';
 import { catchError, map, retry, tap } from 'rxjs/operators';
 import { ICard } from 'app/models/ICard.interface';
-import { User } from 'app/models/User';
+import { IUser } from 'app/models/IUser';
 import { Router } from '@angular/router';
 
 
@@ -12,12 +12,13 @@ import { Router } from '@angular/router';
 })
 export class BackendService {
   private _baseUrl: string = '';
-  private userSubject!: BehaviorSubject<User | null>;
-  public user: Observable<User | null> = new Observable();
+  private readonly TOKEN_NAME: string = 'auth_token';
+  private userSubject!: BehaviorSubject<IUser | null>;
+  public user: Observable<IUser | null> = new Observable();
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: Router) {
     this._baseUrl = baseUrl;
-    this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
+    this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(this.TOKEN_NAME)!));
     this.user = this.userSubject.asObservable();
   }
   public get userValue() {
@@ -46,61 +47,6 @@ export class BackendService {
   }
 
 
-  login(username?: string | undefined | null, password?: string | undefined | null): Observable<User> {
-    return this.http.post<User>(`${this._baseUrl}/auth/Login`, { username, password })
-      .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('user', JSON.stringify(user));
-        this.userSubject.next(user);
-        return user;
-      }));
-  }
 
-  logout() {
-    // remove user from local storage and set current user to null
-    localStorage.removeItem('user');
-    this.userSubject.next(null);
-    this.router.navigate(['/admin/login']);
-  }
-
-  registerUser(user: User): Observable<any> {
-    return this.http.post(`${this._baseUrl}/auth/Register`, user);
-  }
-
-
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this._baseUrl}/auth/GetAllUsers`);
-  }
-
-  getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this._baseUrl}/auth/User/${id}`);
-  }
-
-  updateUser(id: string, params: any): Observable<User> {
-    return this.http.put(`${this._baseUrl}/auth/User/${id}`, params)
-      .pipe(map(x => {
-        // update stored user if the logged in user updated their own record
-        if (id == this.userValue?.id) {
-          // update local storage
-          const user = { ...this.userValue, ...params };
-          localStorage.setItem('user', JSON.stringify(user));
-
-          // publish updated user to subscribers
-          this.userSubject.next(user);
-        }
-        return x;
-      }));
-  }
-
-  deleteUser(id: string): Observable<User> {
-    return this.http.delete(`${this._baseUrl}auth/User/${id}`)
-      .pipe(map(x => {
-        // auto logout if the logged in user deleted their own record
-        if (id == this.userValue?.id) {
-          this.logout();
-        }
-        return x;
-      }));
-  }
 
 } 

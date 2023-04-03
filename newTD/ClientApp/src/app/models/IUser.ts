@@ -1,7 +1,6 @@
-export class User {
+export interface IUser {
     id?: string;
-    email?: string;
-    password?: string;
+    email?: string;    
     firstName?: string;
     lastName?: string;
     token?: string;

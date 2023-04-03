@@ -16,6 +16,7 @@ import { NavbarComponent } from './home/navbar/navbar.component';
 import { LoginComponent } from './home/navbar/login/login.component';
 import { RegisterComponent } from './home/navbar/register/register.component';
 // import { ErrorInterceptor } from './services/error-interceptor.interceptor';
+import { JwtInterceptor } from './services/jwt/jwt.interceptor';
 
 
 @NgModule({
@@ -45,6 +46,11 @@ import { RegisterComponent } from './home/navbar/register/register.component';
     //   useClass: ErrorInterceptor,
     //   multi: true,
     // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: SpinnerInterceptor,

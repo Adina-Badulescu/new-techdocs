@@ -14,12 +14,8 @@
         </div>
       </ng-container>
       <nav class="navbar navbar-light justify-content-left">
-        <!-- <form class="form-inline"> -->
-        <!-- <button type="button" class="btn btn-default btn-lg mr-3" id="btnSort">Cerca il tuo
-                                    modello</button> -->
         <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="restaurant japonez"
-          aria-label="Cauta" id="searchTemplate" [formControl]="searchTemplateInputField">
-        <!-- </form> -->
+          aria-label="Cauta" id="searchTemplate" [formControl]="searchTemplateInputField">        
       </nav>
       <ng-container *ngIf="Suggestions$ | async">
         <p>Sugestii</p>

@@ -83,7 +83,7 @@ namespace newTD.Controllers
                         string token = _userService.CreateToken(userData);
                         var refreshToken = _userService.GenerateRefreshToken();
                         _userService.SetRefreshToken(refreshToken);
-
+                        _logger.LogInformation(token);
                         return Ok(new AuthResponse(true, string.Empty, token));
                     }
                 }

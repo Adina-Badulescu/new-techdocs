@@ -6,7 +6,9 @@ import { LoginComponent } from '../home/navbar/login/login.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 
 import { RegisterComponent } from '../home/navbar/register/register.component';
-import { AdminTemplatesComponent } from './admin-templates/admin-templates.component';
+
+import { OrdersComponent } from './orders/orders.component';
+import { TemplatesComponent } from './templates/templates.component';
 
 export const routes: Routes = [
   {
@@ -15,8 +17,8 @@ export const routes: Routes = [
     
     component: AdminHomeComponent,
     children: [
-      { path: 'admin-templates', title: 'Admin Templates', component: AdminTemplatesComponent },
-      
+      { path: 'templates', title: 'Admin Templates', component: TemplatesComponent },
+      { path: 'orders', title: 'Orders Templates', component: OrdersComponent }
     ]
   }
 ];
@@ -24,7 +26,7 @@ export const routes: Routes = [
 @NgModule({
   declarations: [    
     AdminHomeComponent,    
-    AdminTemplatesComponent
+    TemplatesComponent, OrdersComponent
   ],
   imports: [
     CommonModule,

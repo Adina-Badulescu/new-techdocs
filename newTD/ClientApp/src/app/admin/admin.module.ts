@@ -9,6 +9,7 @@ import { RegisterComponent } from '../home/navbar/register/register.component';
 
 import { OrdersComponent } from './orders/orders.component';
 import { TemplatesComponent } from './templates/templates.component';
+import { UsersComponent } from './users/users.component';
 
 export const routes: Routes = [
   {
@@ -26,7 +27,7 @@ export const routes: Routes = [
 @NgModule({
   declarations: [    
     AdminHomeComponent,    
-    TemplatesComponent, OrdersComponent
+    TemplatesComponent, OrdersComponent, UsersComponent
   ],
   imports: [
     CommonModule,

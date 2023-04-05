@@ -32,8 +32,9 @@ object value = builder.Services.AddAuthentication(JwtBearerDefaults.Authenticati
                 .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
             ValidateIssuer = false,
             ValidateAudience = false,
-            RequireExpirationTime = false,
+            RequireExpirationTime = true,
             ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
         };
     });
 builder.Services.AddEndpointsApiExplorer();

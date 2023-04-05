@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IUser } from '../../models/IUser';
-import { AuthService } from '../auth/auth.service';
+
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,8 +15,7 @@ export class AccountService {
     public _user: Observable<IUser| null>;
     
 
-    constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private authService: AuthService
-    ) {
+    constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
         this._userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(this.TOKEN_NAME)!));
         this._user = this._userSubject.asObservable();
         this._baseUrl = baseUrl;

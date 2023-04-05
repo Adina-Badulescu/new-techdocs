@@ -76,7 +76,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
     this.numberOfCardsByScreenResolution$.subscribe(numberOfCards => this.numberOfCardsByScreenResolution = numberOfCards);
     this.numberOfSuggestionsObjectsByScreenRes$.subscribe(numberOfSuggestions => this.numberOfSuggestionsObjectsByScreenRes = numberOfSuggestions);
     this._backendService.listTemplates(this.numberOfCardsByScreenResolution, null)
-      .subscribe((cardsHttpResponse) => {
+      .subscribe((cardsHttpResponse) => {        
         this.C$ = this._limitNumberOfObjectsService.display_N_Objects(cardsHttpResponse, this.numberOfCardsByScreenResolution); this.totalNumberOfTemplates = Number(cardsHttpResponse[0].NumberOfTemplates)
       });
     this.getKeyboardInput();

@@ -4,6 +4,7 @@ import { LoginComponent } from "./home/navbar/login/login.component";
 import { RegisterComponent } from "./home/navbar/register/register.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { AuthGuard } from "./guards/auth.guard";
+import { HasRoleGuard } from "./guards/has-role.guard";
 type PathMatch = "full" | "prefix" | undefined;
 export const routes = [
     {path: '', component: HomeComponent},
@@ -17,7 +18,7 @@ export const routes = [
     },    
     {
         path: 'admin',
-        canLoad:[AuthGuard],
+        canLoad:[AuthGuard, HasRoleGuard],
         loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
         
     },

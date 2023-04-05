@@ -20,6 +20,7 @@ namespace newTD.UserService
         private readonly ILogger<UserService> _logger;
         private UserModel _user;
 
+
         public UserService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<UserService> logger, UserModel user)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -69,8 +70,8 @@ namespace newTD.UserService
             {
                 claims = new List<Claim>
                 {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, Role.Admin.ToString())
+                new Claim("email", user.Email),
+                new Claim("role", Role.admin.ToString())
                 };
 
                 key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -79,7 +80,7 @@ namespace newTD.UserService
 
                 token = new JwtSecurityToken(
                         claims: claims,
-                        expires: DateTime.Now.AddHours(1),
+                        expires: DateTime.Now.AddMinutes(20),
                         signingCredentials: creds);
 
                 jwt = new JwtSecurityTokenHandler().WriteToken(token);
@@ -88,9 +89,9 @@ namespace newTD.UserService
             }
 
             claims = new List<Claim>
-            {
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, Role.User.ToString())
+            {            
+            new Claim("email", user.Email),
+            new Claim("role", Role.user.ToString())
             };
 
 
@@ -100,7 +101,7 @@ namespace newTD.UserService
 
             token = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.Now.AddHours(1),
+                    expires: DateTime.Now.AddHours(2),
                     signingCredentials: creds);
 
             jwt = new JwtSecurityTokenHandler().WriteToken(token);

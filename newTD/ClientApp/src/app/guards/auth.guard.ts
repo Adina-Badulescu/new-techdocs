@@ -9,15 +9,15 @@ import { AuthService } from '../services/auth/auth.service';
 })
 export class AuthGuard implements CanLoad {
 
-  constructor(private router: Router, private _authService: AuthService) {
+  constructor(private _authService: AuthService) {
 
 
   }
-  canLoad(route: Route, segments: UrlSegment[]): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canLoad(route: Route): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    // const isAuthorized = this._authService.user?.roles.includes(route.data.role);
     
-    console.log('route.path ' + route.path);
-    
-    return this._authService._isLoggedIn$.getValue();
+    //http://schemas.microsoft.com/ws/2008/06/identity/claims/role
+    return this._authService.isLoggedIn$.getValue();
     
   }
 

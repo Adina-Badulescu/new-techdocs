@@ -88,7 +88,7 @@ namespace newTD.Controllers
                     }
                 }
 
-                return BadRequest(new AuthResponse(false, "User or Email not provided", string.Empty));
+                return BadRequest(new AuthResponse(false, "User or Email incorrect", string.Empty));
             }
             catch (Exception ex)
             {

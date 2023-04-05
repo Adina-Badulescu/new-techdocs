@@ -22,8 +22,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    
+  declarations: [    
     AdminHomeComponent,    
     AdminTemplatesComponent
   ],

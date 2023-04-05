@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IAuthResponse } from 'app/models/IAuthResponse';
 import { AuthService } from 'app/services/auth/auth.service';
 import { first } from 'rxjs';
 
@@ -49,15 +51,18 @@ export class LoginComponent implements OnInit {
       this._authService.login(this.f.email.value, this.f.password.value)
           .pipe(first())
           .subscribe({
-              next: () => {
+              next: () => {                
                   // get return url from query parameters or default to home page
-                  const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+                  const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
                   this.router.navigateByUrl(returnUrl);
               },
-              error: (error: any) => {
-                console.log(error);                
+              error: (e: HttpErrorResponse) => {
+                // console.log(e.error.errors)
+                alert(e.error.errors)
+                // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login';
+                // this.router.navigateByUrl(returnUrl);               
                   // this.alertService.error(error);
-                //   this.loading = false;
+                  this.loading = false;
               }
           });
   }

@@ -1,23 +1,22 @@
 <div class="container">
-    <div class="row mt-5">
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Template Title</span>
-            <input type="text" class="form-control" placeholder="some_template.zip" aria-label="Username"
-                aria-describedby="basic-addon1">
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text">Template Description</span>
-            <textarea class="form-control" aria-label="With textarea"></textarea>
-        </div>
-
-
-        <div class="input-group mb-3">
-            <input type="file" class="form-control" id="inputGroupFile02">
-            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-        </div>
-
-
+    <div class="row mx-5 my-3">
+        <form [formGroup]="templatesForm" (ngSubmit)="onSubmit()">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="template_title">Template Title</span>
+                <input type="text" class="form-control" formControlName="title" placeholder="some_template.zip" aria-label="template_title"
+                    aria-describedby="template_title">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Template Description</span>
+                <textarea class="form-control" formControlName="description" aria-label="With textarea"></textarea>
+            </div>
+            <div class="input-group mb-3">
+                <input type="file" formControlName="content" class="form-control" id="inputFile">
+                <label class="input-group-text" for="inputFile">Upload</label>
+            </div>
+            <p>Complete the form to enable button.</p>
+            <button type="submit" [disabled]="!templatesForm.valid">Submit</button>
+        </form>
     </div>
     <div class="row">
         <div class="col-12">
@@ -38,10 +37,10 @@
                         <td>Cristina</td>
                         <td>2.846</td>
                         <td>
-                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye">Inspect</i></button>
+                            <button type="button" class="btn btn-primary"><i
+                                    class="fa-solid fa-eye">Inspect</i></button>
                             <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
-                            <button type="button" class="btn btn-danger"><i
-                                    class="far fa-trash-alt">Delete</i></button>
+                            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
                         </td>
                     </tr>
                     <tr>
@@ -50,10 +49,10 @@
                         <td>Cristina</td>
                         <td>3.417</td>
                         <td>
-                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye">Inspect</i></button>
+                            <button type="button" class="btn btn-primary"><i
+                                    class="fa-solid fa-eye">Inspect</i></button>
                             <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
-                            <button type="button" class="btn btn-danger"><i
-                                    class="far fa-trash-alt">Delete</i></button>
+                            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
                         </td>
                     </tr>
                     <tr>
@@ -62,10 +61,10 @@
                         <td>Cristina</td>
                         <td>1.234</td>
                         <td>
-                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye">Inspect</i></button>
+                            <button type="button" class="btn btn-primary"><i
+                                    class="fa-solid fa-eye">Inspect</i></button>
                             <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
-                            <button type="button" class="btn btn-danger"><i
-                                    class="far fa-trash-alt">Delete</i></button>
+                            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
                         </td>
                     </tr>
                 </tbody>

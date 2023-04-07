@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+// import { IContactForm } from '../interfaces/contactForm';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-templates',
@@ -7,7 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TemplatesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _fb: FormBuilder,) { }
+
+  templatesForm = this._fb.group({
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+    content: ['', Validators.required]
+  });
+
+  get f() {
+    return this.templatesForm.value;
+  }
+
+  onSubmit() {
+    console.log(this.f);    
+  }
 
   ngOnInit(): void {
   }

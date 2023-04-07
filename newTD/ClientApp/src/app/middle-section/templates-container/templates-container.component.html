@@ -1,11 +1,11 @@
 <div class="container">
   <div class="row margin-b-40">
-    <div class="col-sm-12 col-md-12 col-lg-12">       
+    <div class="col-sm-12 col-md-12 col-lg-12">
       <h2>Modele recente</h2>
       <p>Cauta-ti afacerea, de exemplu... </p>
       <ng-container>
         <p>Total modele disponibile - {{totalNumberOfTemplates}}</p>
-      </ng-container>      
+      </ng-container>
       <ng-container *ngIf="displaySpinner$ | async">
         <div class="text-center">
           <div class="spinner-border" role="status">
@@ -13,9 +13,9 @@
           </div>
         </div>
       </ng-container>
-      <nav class="navbar navbar-light justify-content-left">
+      <nav class="navbar navbar-light justify-content-left col-lg-4">
         <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="restaurant japonez"
-          aria-label="Cauta" id="searchTemplate" [formControl]="searchTemplateInputField">        
+          aria-label="Cauta" id="searchTemplate" [formControl]="searchTemplateInputField">
       </nav>
       <ng-container *ngIf="Suggestions$ | async">
         <p>Sugestii</p>

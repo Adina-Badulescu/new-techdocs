@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -60,6 +61,7 @@ namespace newTD.Controllers
 
 
         [HttpPost("CreateTemplate")]
+        [Authorize(Policy = "FullAccess")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateModel template)
         {
             try
@@ -76,6 +78,7 @@ namespace newTD.Controllers
         }
 
         [HttpPost("UpdateTemplate")]
+        [Authorize(Policy = "FullAccess")]
         public async Task<IActionResult> UpdateTemplate([FromBody] TemplateModel template)
         {
             try
@@ -92,6 +95,7 @@ namespace newTD.Controllers
         }
 
         [HttpDelete("DeleteTemplate")]
+        [Authorize(Policy = "FullAccess")]
         public async Task<IActionResult> DeleteTemplate([FromQuery] Guid Id)
         {
             try

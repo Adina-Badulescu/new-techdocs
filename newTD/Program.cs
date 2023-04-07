@@ -2,8 +2,6 @@ global using DataAccess.Data;
 using DataAccess.DbAccess;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using newTD.UserService;
@@ -37,6 +35,13 @@ object value = builder.Services.AddAuthentication(JwtBearerDefaults.Authenticati
             ClockSkew = TimeSpan.Zero
         };
     });
+builder.Services.AddAuthorization(options =>
+{
+
+    options.AddPolicy("FullAccess", policy =>
+                  policy.RequireRole("admin"));
+
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

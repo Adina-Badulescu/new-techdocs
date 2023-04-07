@@ -19,7 +19,8 @@ export const routes: Routes = [
     component: AdminHomeComponent,
     children: [
       { path: 'templates', title: 'Admin Templates', component: TemplatesComponent },
-      { path: 'orders', title: 'Orders Templates', component: OrdersComponent }
+      { path: 'orders', title: 'Admin Orders', component: OrdersComponent },
+      { path: 'users', title: 'Admin Users', component: OrdersComponent }
     ]
   }
 ];

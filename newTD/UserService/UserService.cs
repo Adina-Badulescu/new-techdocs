@@ -91,7 +91,7 @@ namespace newTD.UserService
             claims = new List<Claim>
             {            
             new Claim("email", user.Email),
-            new Claim("role", Role.user.ToString())
+            new Claim("role", Role.user.ToString())            
             };
 
 

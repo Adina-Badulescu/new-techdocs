@@ -22,10 +22,10 @@ export const routes = [
         loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
         
     },
-    {
-        path: 'orders',
-        loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
-    },
+    // {
+    //     path: 'orders',
+    //     loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
+    // },
     { path: '',   redirectTo: 'app-home', pathMatch: 'full' as PathMatch },
     {path: '**', component: NotFoundComponent}
 

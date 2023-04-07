@@ -2,6 +2,7 @@ import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angu
 import { BackendService } from 'app/services/backend/backend.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Observable, of, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
+
 import { ICard } from '../../models/ICard.interface';
 import { SpinnerService } from 'app/services/spinner/spinner.service';
 import { GetScreenResolutionService } from 'app/services/get-screen-resolution/get-screen-resolution.service';

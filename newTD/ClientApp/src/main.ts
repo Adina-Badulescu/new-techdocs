@@ -8,10 +8,6 @@ export function getBaseUrl() {
   return document.getElementsByTagName('base')[0].href;
 }
 
-//export function getSearchUrl(searchedUrl: string): string {
-//  return searchedUrl;
-//}
-
 const providers = [
   { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
   //{ provide: 'DOMAIN_URL', useFactory: getSearchUrl, deps: [] }

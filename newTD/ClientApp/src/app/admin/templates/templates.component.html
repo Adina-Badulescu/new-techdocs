@@ -3,15 +3,16 @@
         <form [formGroup]="templatesForm" (ngSubmit)="onSubmit()">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="template_title">Template Title</span>
-                <input type="text" class="form-control" formControlName="title" placeholder="some_template.zip" aria-label="template_title"
-                    aria-describedby="template_title">
+                <input type="text" class="form-control" formControlName="title" placeholder="some_template.zip"
+                    aria-label="template_title" aria-describedby="template_title">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">Template Description</span>
                 <textarea class="form-control" formControlName="description" aria-label="With textarea"></textarea>
             </div>
             <div class="input-group mb-3">
-                <input type="file" formControlName="content" class="form-control" id="inputFile">
+                <input type="file" directory="directory" multiple webkitdirectory="webkitdirectory"
+                    formControlName="content" class="form-control" id="inputFile">
                 <label class="input-group-text" for="inputFile">Upload</label>
             </div>
             <p>Complete the form to enable button.</p>
@@ -21,54 +22,32 @@
     <div class="row">
         <div class="col-12">
             <table class="table table-bordered">
+
                 <thead>
                     <tr>
-                        <th scope="col">Day</th>
-                        <th scope="col">Article Name</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Shares</th>
-                        <th scope="col">Actions</th>
+                        <th>#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Bootstrap 4 CDN and Starter Template</td>
-                        <td>Cristina</td>
-                        <td>2.846</td>
-                        <td>
-                            <button type="button" class="btn btn-primary"><i
-                                    class="fa-solid fa-eye">Inspect</i></button>
-                            <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
-                            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Bootstrap Grid 4 Tutorial and Examples</td>
-                        <td>Cristina</td>
-                        <td>3.417</td>
-                        <td>
-                            <button type="button" class="btn btn-primary"><i
-                                    class="fa-solid fa-eye">Inspect</i></button>
-                            <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
-                            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Bootstrap Flexbox Tutorial and Examples</td>
-                        <td>Cristina</td>
-                        <td>1.234</td>
-                        <td>
-                            <button type="button" class="btn btn-primary"><i
-                                    class="fa-solid fa-eye">Inspect</i></button>
-                            <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
-                            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
-                        </td>
-                    </tr>
+                    <ng-container *ngFor="let template of templatesList;index as i;trackBy: trackByFn">
+                        <tr>
+                            <th scope="row">{{i + 1}}</th>
+                            <td>{{template.Title}}</td>
+                            <td>{{template.Description}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary"><i
+                                        class="fa-solid fa-eye">Inspect</i></button>
+                                <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
+                                <button type="button" class="btn btn-danger"><i
+                                        class="far fa-trash-alt">Delete</i></button>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<app-modal></app-modal>   

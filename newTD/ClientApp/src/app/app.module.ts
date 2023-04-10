@@ -15,9 +15,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NavbarComponent } from './home/navbar/navbar.component';
 import { LoginComponent } from './home/navbar/login/login.component';
 import { RegisterComponent } from './home/navbar/register/register.component';
-// import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
-// import { ErrorInterceptor } from './services/error-interceptor.interceptor';
 import { JwtInterceptor } from './services/jwt/jwt.interceptor';
+// import { ErrorInterceptor } from './services/error-interceptor.interceptor';
+
 
 
 @NgModule({
@@ -30,8 +30,7 @@ import { JwtInterceptor } from './services/jwt/jwt.interceptor';
     CardComponent,
     NavbarComponent,
     LoginComponent,
-    RegisterComponent
-
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

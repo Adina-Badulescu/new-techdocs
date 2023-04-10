@@ -6,7 +6,7 @@ import { LoginComponent } from '../home/navbar/login/login.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 
 import { RegisterComponent } from '../home/navbar/register/register.component';
-
+import { ModalComponent } from 'app/admin/modal/modal.component';
 import { OrdersComponent } from './orders/orders.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { UsersComponent } from './users/users.component';
@@ -28,7 +28,10 @@ export const routes: Routes = [
 @NgModule({
   declarations: [    
     AdminHomeComponent,    
-    TemplatesComponent, OrdersComponent, UsersComponent
+    TemplatesComponent,
+    OrdersComponent,
+    UsersComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,

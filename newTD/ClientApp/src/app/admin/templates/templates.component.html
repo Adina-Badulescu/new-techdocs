@@ -1,22 +1,62 @@
 <div class="container">
     <div class="row mx-5 my-3">
-        <form [formGroup]="templatesForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="input-group mb-3">
-                <span class="input-group-text" id="template_title">Template Title</span>
-                <input type="text" class="form-control" formControlName="title" placeholder="some_template.zip"
-                    aria-label="template_title" aria-describedby="template_title">
+                <span class="input-group-text" id="title">Template Title</span>
+                <input type="text" class="form-control" formControlName="title" placeholder="restaurant thai"
+                    aria-label="title" aria-describedby="template_title"
+                    [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
+                <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                    <div *ngIf="f.title.errors.required">Title is required</div>
+                </div>
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">Template Description</span>
                 <textarea class="form-control" formControlName="description" aria-label="With textarea"></textarea>
+                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                    <div *ngIf="f.description.errors.required">Description is required</div>
+                </div>
             </div>
             <div class="input-group mb-3">
                 <input type="file" directory="directory" multiple webkitdirectory="webkitdirectory"
                     formControlName="content" class="form-control" id="inputFile">
                 <label class="input-group-text" for="inputFile">Upload</label>
+                <div *ngIf="submitted && f.content.errors" class="invalid-feedback">
+                    <div *ngIf="f.content.errors.required">THe content is required</div>
+                </div>
             </div>
-            <p>Complete the form to enable button.</p>
-            <button type="submit" [disabled]="!templatesForm.valid">Submit</button>
+            <!-- <div class="input-group mb-3">
+                <span class="input-group-text" id="mainColors">Main Colors</span>
+                <input type="text" class="form-control" formControlName="mainColors" placeholder="red green blue"
+                    aria-label="mainColors" aria-describedby="mainColors"
+                    [ngClass]="{ 'is-invalid': submitted && f.mainColors.errors }">
+                <div *ngIf="submitted && f.mainColors.errors" class="invalid-feedback">
+                    <div *ngIf="f.mainColors.errors.required">Title is required</div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="responsiveColumns">How many responsive columns</span>
+                <input type="number" class="form-control" formControlName="responsiveColumns" placeholder="3"
+                    aria-label="responsiveColumns" aria-describedby="responsiveColumns"
+                    [ngClass]="{ 'is-invalid': submitted && f.responsiveColumns.errors }">
+                <div *ngIf="submitted && f.responsiveColumns.errors" class="invalid-feedback">
+                    <div *ngIf="f.responsiveColumns.errors.required">Title is required</div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="imgPath">IMG PATH</span>
+                <input type="text" class="form-control" formControlName="imgPath" placeholder="some_template.zip"
+                    aria-label="imgPath" aria-describedby="imgPath"
+                    [ngClass]="{ 'is-invalid': submitted && f.imgPath.errors }">
+                <div *ngIf="submitted && f.imgPath.errors" class="invalid-feedback">
+                    <div *ngIf="f.imgPath.errors.required">Img path is required</div>
+                </div>
+            </div> -->
+            <button type="submit" [disabled]="!form.valid" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                Submit
+            </button>
+            <!-- <button type="submit" [disabled]="!form.valid">Submit</button> -->
         </form>
     </div>
     <div class="row">
@@ -37,8 +77,8 @@
                             <td>{{template.Title}}</td>
                             <td>{{template.Description}}</td>
                             <td>
-                                <button type="button" class="btn btn-primary"><i
-                                        class="fa-solid fa-eye">Inspect</i></button>
+                                <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"
+                                        (click)="openModal()">Inspect</i></button>
                                 <button type="button" class="btn btn-success"><i class="fas fa-edit">Edit</i></button>
                                 <button type="button" class="btn btn-danger"><i
                                         class="far fa-trash-alt">Delete</i></button>
@@ -50,4 +90,4 @@
         </div>
     </div>
 </div>
-<app-modal></app-modal>   
+<app-modal></app-modal>

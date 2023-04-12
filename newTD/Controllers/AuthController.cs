@@ -12,8 +12,7 @@ namespace newTD.Controllers
     public class AuthController : ControllerBase
     {
 
-        private readonly ILogger<AuthController> _logger;        
-        //private UserModel _user = new();
+        private readonly ILogger<AuthController> _logger;           
         private UserModel _user;
         private readonly IUserService _userService;
         private readonly IUserData _userData;
@@ -83,7 +82,7 @@ namespace newTD.Controllers
                         string token = _userService.CreateToken(userData);
                         var refreshToken = _userService.GenerateRefreshToken();
                         _userService.SetRefreshToken(refreshToken);
-                        _logger.LogInformation(token);
+                        //_logger.LogInformation(token);
                         return Ok(new AuthResponse(true, string.Empty, token));
                     }
                 }

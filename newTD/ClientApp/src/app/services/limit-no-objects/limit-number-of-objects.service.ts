@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICard } from 'app/models/ICard.interface';
+import { ITemplate } from 'app/models/ITemplate.interface';
 import { concatMap, map, mergeMap, Observable, of, take, tap } from 'rxjs';
 
 @Injectable({
@@ -9,10 +9,10 @@ export class LimitNumberOfObjectsService {
 
   constructor() { }
 
-  display_N_Objects(sourceArray: ICard[], numberOfObjects: number): Observable<ICard[]> {
-    let nObjectsObservable: Observable<ICard[]> = new Observable();
-    let card: Observable<ICard>;
-    let cardArray: ICard[] = [];
+  display_N_Objects(sourceArray: ITemplate[], numberOfObjects: number): Observable<ITemplate[]> {
+    let nObjectsObservable: Observable<ITemplate[]> = new Observable();
+    let card: Observable<ITemplate>;
+    let cardArray: ITemplate[] = [];
 
     card = of(sourceArray).pipe(
       // From array to observable emitting items synchronously

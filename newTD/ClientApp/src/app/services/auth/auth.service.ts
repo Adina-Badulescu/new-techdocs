@@ -37,14 +37,14 @@ export class AuthService {
     return localStorage.getItem(this.TOKEN_NAME);
   }
 
-  login(email: string, password: string): Observable<void> {    
-    return this.http.post<IAuthResponse>(`${this._baseUrl}auth/Login`, { email, password })
+  login(loginObject: any): Observable<void> {    
+    return this.http.post<IAuthResponse>(`${this._baseUrl}auth/Login`, loginObject)
       .pipe(map(authResponse => {
         if (authResponse.result != true) {
           this.isLoggedIn$.next(false);          
         }
         this.isLoggedIn$.next(true);
-        localStorage.setItem(this.TOKEN_NAME, JSON.stringify(authResponse.token));             
+        localStorage.setItem(this.TOKEN_NAME, authResponse.token);             
       }));
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -16,5 +16,5 @@ export class ComponentCommunicationService {
     this.showHideSubject$.next(sendFlag);       
   }
 
-
+  
 }

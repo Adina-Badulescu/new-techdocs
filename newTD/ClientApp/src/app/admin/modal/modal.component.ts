@@ -9,28 +9,31 @@ import { ComponentCommunicationService } from 'app/services/component-communicat
 })
 export class ModalComponent implements OnInit, OnDestroy {
   
-  isOpen: boolean = false;
-  private element: HTMLElement;
+    private element: HTMLElement;
 
   constructor(private el: ElementRef, private componentComm: ComponentCommunicationService) { 
     this.element = el.nativeElement;
   }
 
-  open() {
-    this.element.style.display = 'block';
-    document.body.classList.add('jw-modal-open');
-    this.isOpen = true;
+  open(flag: boolean) {    
+    if (flag === true) {
+      console.log(flag);                
+      this.element.style.display = 'block';
+      document.body.classList.add('jw-modal-open');      
+    }
+    return;    
   }
 
   close() {
     this.element.style.display = 'none';
     document.body.classList.remove('jw-modal-open');
-    this.isOpen = false;
+    this.componentComm.sendFlag(false);    
   }
 
   ngOnInit(): void {
+    this.componentComm.showHideSubject$.subscribe(showModal => this.open(showModal));
     document.body.appendChild(this.element);
-          this.close();
+    this.close();
   }
 
   ngOnDestroy() {    

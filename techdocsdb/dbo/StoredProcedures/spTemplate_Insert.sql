@@ -1,5 +1,6 @@
 ﻿
 CREATE PROCEDURE [dbo].[spTemplate_Insert]
+	@TemplateId uniqueidentifier,
 	@Title nvarchar(40) ,
 	@Description nvarchar(100),
 	@MainColors nvarchar(30),
@@ -7,6 +8,6 @@ CREATE PROCEDURE [dbo].[spTemplate_Insert]
 	@ImgPath nvarchar(50)
 AS
 BEGIN
-	INSERT INTO dbo.Templates (Title, [Description], MainColors, ResponsiveColumns, ImgPath)
-	VALUES (@Title, @Description, @MainColors, @ResponsiveColumns, @ImgPath);
+	INSERT INTO dbo.Templates (TemplateId, Title, [Description], MainColors, ResponsiveColumns, ImgPath)
+	VALUES (@TemplateId, @Title, @Description, @MainColors, @ResponsiveColumns, @ImgPath);
 END

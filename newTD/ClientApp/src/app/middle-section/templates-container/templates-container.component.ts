@@ -2,8 +2,7 @@ import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angu
 import { BackendService } from 'app/services/backend/backend.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Observable, of, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-
-import { ICard } from '../../models/ICard.interface';
+import { ITemplate } from '../../models/ITemplate.interface';
 import { SpinnerService } from 'app/services/spinner/spinner.service';
 import { GetScreenResolutionService } from 'app/services/get-screen-resolution/get-screen-resolution.service';
 import { LimitNumberOfObjectsService } from 'app/services/limit-no-objects/limit-number-of-objects.service';
@@ -18,8 +17,8 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
 
 
   totalNumberOfTemplates: number = 0;
-  Suggestions$: Observable<ICard[]> = new Observable();
-  C$: Observable<ICard[]> = new Observable();
+  Suggestions$: Observable<ITemplate[]> = new Observable();
+  C$: Observable<ITemplate[]> = new Observable();
   backendServiceSubscription: Subscription = new Subscription();
   searchTemplateInputField = new FormControl('');
   displaySpinner$: BehaviorSubject<boolean> = this._spinnerService.spinnerBooleanState;
@@ -46,7 +45,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
       )
       .subscribe(keyBoardInput => {
         this._backendService.listTemplates(this.numberOfCardsByScreenResolution, keyBoardInput?.toLowerCase())
-          .subscribe((cardsHttpResponse: ICard[]) => {
+          .subscribe((cardsHttpResponse: ITemplate[]) => {
             this.C$ = this._limitNumberOfObjectsService.display_N_Objects(cardsHttpResponse, this.numberOfCardsByScreenResolution);
             if (keyBoardInput?.toLowerCase != null) {
               this.Suggestions$ = this._limitNumberOfObjectsService.display_N_Objects(cardsHttpResponse, this.numberOfSuggestionsObjectsByScreenRes);
@@ -69,7 +68,7 @@ export class TemplatesContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  trackByFn(index: number, item: ICard) {
+  trackByFn(index: number, item: ITemplate) {
     return item.TemplateId;
   }
 

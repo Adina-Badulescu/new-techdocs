@@ -64,9 +64,35 @@ namespace newTD.Controllers
         [Authorize(Policy = "FullAccess")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateModel template)
         {
+            _logger.LogInformation("here");
+            _logger.LogInformation(template.Title, template.Description, template.Content);
+            template.TemplateId = Guid.NewGuid();
             try
             {
                 await _templateData.InsertTemplate(template);
+                var templateDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Templates", template.TemplateId.ToString());
+
+                if (!Directory.Exists(templateDirectoryPath))
+                {
+                    Directory.CreateDirectory(templateDirectoryPath);
+                }
+
+                foreach (IFormFile file in template.Content)
+                    //foreach (var file in template.Content)
+                    {
+                    if (file.Length <= 0) continue;
+
+                    //fileName is the the fileName including the relative path
+                    string path = Path.Combine(templateDirectoryPath, file.FileName);
+
+                    //check if folder exists, create if not
+                    var fi = new FileInfo(path);
+                    fi.Directory?.Create();
+
+                    //copy to target
+                    using var fileStream = new FileStream(path, FileMode.Create);
+                    await file.CopyToAsync(fileStream);
+                }
                 return Ok($"New Template Inserted with: {template}");
             }
             catch (Exception ex)

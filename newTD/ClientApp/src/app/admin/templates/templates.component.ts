@@ -1,10 +1,12 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 // import { IContactForm } from '../interfaces/contactForm';
 import { Validators } from '@angular/forms';
-import { ICard } from 'app/models/ICard.interface';
+import { ITemplate } from 'app/models/ITemplate.interface';
 import { BackendService } from 'app/services/backend/backend.service';
 import { ComponentCommunicationService } from 'app/services/component-communication/component-com.service';
+import { ModalComponent } from '../modal/modal.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -13,32 +15,69 @@ import { ComponentCommunicationService } from 'app/services/component-communicat
   styleUrls: ['./templates.component.css']
 })
 export class TemplatesComponent implements OnInit {
-  
-  templatesList: ICard[] = [];
-  maxTemplateNumber: number = 10000;
-  constructor(private _fb: FormBuilder, private _backendService: BackendService, private componentComm: ComponentCommunicationService) { }
 
-  templatesForm = this._fb.group({
-    title: ['', Validators.required],
-    description: ['', Validators.required],
-    content: ['', Validators.required]
-  });
+  form!: FormGroup;
+  templatesList: ITemplate[] = [];
+  maxTemplateNumber: number = 10000;
+  submitted = false;
+  loading = false;
+  // modal: ModalComponent;
+  constructor(private formBuilder: FormBuilder,
+    private _backendService: BackendService,
+    private componentComm: ComponentCommunicationService,
+  ) {
+    // this.modal = this.el;
+  }
+
+
 
   get f() {
-    return this.templatesForm.value;
+    return this.form.value;
   }
-  
-  trackByFn(index: number, item: ICard) {
+
+  trackByFn(index: number, item: ITemplate) {
     return item.TemplateId;
   }
 
+  openModal() {
+    this.componentComm.sendFlag(true);
+  }
+
   onSubmit() {
-    console.log(this.f);    
+    console.log(this.f);
+    this.submitted = true;
+    this.loading = true;
+    if (this.form.invalid) {
+      return;
+    }
+
+    this._backendService.createTemplate(this.f)
+    .subscribe({
+      next: () => {
+        alert("template added");
+        this.loading = false;
+        this._backendService.listTemplates(this.maxTemplateNumber, null)
+        .subscribe(template => this.templatesList = template);
+      },
+      error: (e: HttpErrorResponse) => {
+        alert(e.error.errors);
+        this.loading = false;
+      }
+    });
   }
 
   ngOnInit(): void {
     this._backendService.listTemplates(this.maxTemplateNumber, null)
-    .subscribe(template => this.templatesList = template);    
+      .subscribe(template => this.templatesList = template);
+
+    this.form = this.formBuilder.group({
+      title: [null, Validators.required],
+      description: [null, Validators.required],
+      content: [null],
+      // mainColors: [null],
+      // responsiveColumns: [null],
+      // imgPath: [null]
+    });
   }
 
 }

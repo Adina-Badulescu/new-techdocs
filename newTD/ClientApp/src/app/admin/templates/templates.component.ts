@@ -18,7 +18,7 @@ export class TemplatesComponent implements OnInit {
 
   form!: FormGroup;
   templatesList: ITemplate[] = [];
-  maxTemplateNumber: number = 10000;
+  maxNumberOfTemplates: number = 10000;
   submitted = false;
   loading = false;
   // modal: ModalComponent;
@@ -56,7 +56,7 @@ export class TemplatesComponent implements OnInit {
       next: () => {
         alert("template added");
         this.loading = false;
-        this._backendService.listTemplates(this.maxTemplateNumber, null)
+        this._backendService.listTemplates(this.maxNumberOfTemplates, null)
         .subscribe(template => this.templatesList = template);
       },
       error: (e: HttpErrorResponse) => {
@@ -67,7 +67,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._backendService.listTemplates(this.maxTemplateNumber, null)
+    this._backendService.listTemplates(this.maxNumberOfTemplates, null)
       .subscribe(template => this.templatesList = template);
 
     this.form = this.formBuilder.group({

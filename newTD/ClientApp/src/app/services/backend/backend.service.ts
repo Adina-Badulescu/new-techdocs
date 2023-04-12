@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, pipe } from 'rxjs';
 import { catchError, map, retry, tap } from 'rxjs/operators';
 import { ITemplate } from 'app/models/ITemplate.interface';
@@ -15,6 +15,7 @@ export class BackendService {
   private readonly TOKEN_NAME: string = 'auth_token';
   private userSubject!: BehaviorSubject<string>;
   public user: Observable<string | null> = new Observable();
+  private readonly headers = new HttpHeaders({'Content-Type': 'multipart/form-data'});
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: Router) {
     this._baseUrl = baseUrl;
@@ -47,7 +48,7 @@ export class BackendService {
   }
 
   createTemplate(template: any) {
-    return this.http.post<any>(`${this._baseUrl}templates/CreateTemplate`, template)
+    return this.http.post<any>(`${this._baseUrl}templates/CreateTemplate`, template, {headers: this.headers})
       .pipe(this.retryOnError)
   }
 

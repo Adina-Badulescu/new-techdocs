@@ -46,10 +46,10 @@ namespace DataAccess.Data
         }
 
         public async Task InsertTemplate(TemplateModel template)
-        {
+        {               
             try
-            {
-                await _db.SaveData("dbo.spTemplate_Insert", new { template.Title, template.Description, template.MainColors, template.ResponsiveColumns, template.ImgPath });
+            {                
+                await _db.SaveData("dbo.spTemplate_Insert", new { template.TemplateId, template.Title, template.Description, template.MainColors, template.ResponsiveColumns, template.ImgPath });
             }
             catch (Exception ex)
             {

@@ -43,14 +43,14 @@ export class TemplatesComponent implements OnInit {
     this.componentComm.sendFlag(true);
   }
 
-  onSubmit() {
-    console.log(this.f);
+  onSubmit() {    
     this.submitted = true;
     this.loading = true;
     if (this.form.invalid) {
       return;
     }
-
+    console.log(this.f.content);
+    
     this._backendService.createTemplate(this.f)
     .subscribe({
       next: () => {

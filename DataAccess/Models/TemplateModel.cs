@@ -14,7 +14,7 @@ namespace DataAccess.Models
         public Guid TemplateId { get; set; } 
         public string? Title { get; set; } = string.Empty;         
         public string? Description { get; set; } = string.Empty;
-        public IFormFileCollection[] Content { get; set; }
+        public IFormFileCollection? Content { get; set; }
         //public List<IFormFile> Content { get; set; }
         public string? MainColors { get; set; } = string.Empty;
         public int? ResponsiveColumns { get; set; } = 0;

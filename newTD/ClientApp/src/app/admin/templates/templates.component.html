@@ -1,10 +1,10 @@
 <div class="container">
     <div class="row mx-5 my-3">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="title">Template Title</span>
                 <input type="text" class="form-control" formControlName="title" placeholder="restaurant thai"
-                    aria-label="title" aria-describedby="template_title"
+                    aria-label="title" aria-describedby= "template_title"
                     [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
                 <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
                     <div *ngIf="f.title.errors.required">Title is required</div>
@@ -19,10 +19,10 @@
             </div>
             <div class="input-group mb-3">
                 <input type="file" multiple webkitdirectory="webkitdirectory"
-                    formControlName="content" class="form-control" id="inputFile">
+                    formControlName="files" class="form-control" id="inputFile" name="files" (change)="uploadFiles($event)">
                 <label class="input-group-text" for="inputFile">Upload</label>
-                <div *ngIf="submitted && f.content.errors" class="invalid-feedback">
-                    <div *ngIf="f.content.errors.required">THe content is required</div>
+                <div *ngIf="submitted && f.files.errors" class="invalid-feedback">
+                    <div *ngIf="f.files.errors.required">The files are required</div>
                 </div>
             </div>
             <!-- <div class="input-group mb-3">

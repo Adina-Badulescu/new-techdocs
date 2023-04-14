@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Tokens;
 using Whois;
 
 namespace newTD.Controllers
@@ -61,30 +62,36 @@ namespace newTD.Controllers
 
 
         [HttpPost("CreateTemplate")]
-        [Authorize(Policy = "FullAccess")]
-        public async Task<IActionResult> CreateTemplate([FromBody] TemplateModel template)
+        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
+        [RequestSizeLimit(209715200)]
+        //[Authorize(Policy = "FullAccess")]
+        public async Task<IActionResult> CreateTemplate([FromForm] TemplateModel template)
         {
-            _logger.LogInformation("here");
-            _logger.LogInformation(template.Title, template.Description, template.Content);
+
             template.TemplateId = Guid.NewGuid();
+            //Console.WriteLine("ff " + files.Count.ToString());
             try
             {
                 await _templateData.InsertTemplate(template);
                 var templateDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Templates", template.TemplateId.ToString());
-
+                
+                if (template.Files?.Count <= 0)
+                {
+                    _logger.LogInformation("no data");
+                }
                 if (!Directory.Exists(templateDirectoryPath))
                 {
                     Directory.CreateDirectory(templateDirectoryPath);
                 }
 
-                foreach (IFormFile file in template.Content)
-                    //foreach (var file in template.Content)
-                    {
+                foreach (IFormFile file in template.Files)
+                {
                     if (file.Length <= 0) continue;
+
 
                     //fileName is the the fileName including the relative path
                     string path = Path.Combine(templateDirectoryPath, file.FileName);
-
+                    _logger.LogInformation("filename " + file.FileName);  
                     //check if folder exists, create if not
                     var fi = new FileInfo(path);
                     fi.Directory?.Create();
@@ -93,7 +100,8 @@ namespace newTD.Controllers
                     using var fileStream = new FileStream(path, FileMode.Create);
                     await file.CopyToAsync(fileStream);
                 }
-                return Ok($"New Template Inserted with: {template}");
+                //return Ok($"New Template Inserted with: {template}");
+                return Ok($"New Template Inserted with: {template.TemplateId.ToString()}");
             }
             catch (Exception ex)
             {

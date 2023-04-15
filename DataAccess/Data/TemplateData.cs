@@ -49,7 +49,7 @@ namespace DataAccess.Data
         {               
             try
             {                
-                await _db.SaveData("dbo.spTemplate_Insert", new { template.TemplateId, template.Title, template.Description, template.MainColors, template.ResponsiveColumns, template.ImgPath });
+                await _db.SaveData("dbo.spTemplate_Insert", new { template.TemplateId, template.Title, template.Description, template.MainColors, template.ResponsiveColumns, template.ImgPath, template.EntryDirectory });
             }
             catch (Exception ex)
             {

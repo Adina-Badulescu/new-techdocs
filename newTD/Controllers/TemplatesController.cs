@@ -109,8 +109,9 @@ namespace newTD.Controllers
                     await file.CopyToAsync(fileStream);
                 }
                 await _templateData.InsertTemplate(template);
-                //return Ok($"New Template Inserted with: {template}");
-                return Ok($"New Template Inserted with: {template.TemplateId}");
+                
+                string jsonTemplateResponseOK = JsonSerializer.Serialize<TemplateResponse>(new TemplateResponse(true, ""));
+                return Ok(jsonTemplateResponseOK);
             }
             catch (Exception ex)
             {

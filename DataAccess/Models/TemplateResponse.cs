@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public class AuthResponse
-    {
-        public AuthResponse(bool result, string errors, string token)
+    public class TemplateResponse
+    {   
+        public TemplateResponse(bool result, string errors) 
         {
-            Token = token;
             Result = result;
             Errors = errors;
         }
-        public string? Token { get; set; }
         public bool Result { get; set; }
         public string? Errors { get; set; }
     }

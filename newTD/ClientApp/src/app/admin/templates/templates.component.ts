@@ -5,7 +5,6 @@ import { Validators } from '@angular/forms';
 import { ITemplate } from 'app/models/ITemplate.interface';
 import { BackendService } from 'app/services/backend/backend.service';
 import { ComponentCommunicationService } from 'app/services/component-communication/component-com.service';
-import { ModalComponent } from '../modal/modal.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
@@ -66,19 +65,36 @@ export class TemplatesComponent implements OnInit {
         next: () => {
           alert("template added");
           this.loading = false;
-          this._backendService.listTemplates(this.maxNumberOfTemplates, null)
-            .subscribe(template => this.templatesList = template);
         },
-        error: (e: HttpErrorResponse) => {
-          alert(e.error.errors);
-          this.loading = false;
+        error: (e: HttpErrorResponse) => {          
+          alert(JSON.stringify(e));
+          this.loading = true;
         }
       });
+      
+
+      this._backendService.listTemplates(this.maxNumberOfTemplates, null)
+      .subscribe({
+        next: (templates) => {
+          this.templatesList = templates
+        },
+        error: (e: HttpErrorResponse) => {
+          alert(JSON.stringify(e));
+        }
+      });
+      
   }
 
   ngOnInit(): void {
     this._backendService.listTemplates(this.maxNumberOfTemplates, null)
-      .subscribe(template => this.templatesList = template);
+    .subscribe({
+      next: (templates) => {
+        this.templatesList = templates
+      },
+      error: (e: HttpErrorResponse) => {
+        alert(JSON.stringify(e));
+      }
+    });
 
     this.form = this.formBuilder.group({
       title: [null, Validators.required],

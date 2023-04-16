@@ -10,6 +10,7 @@ import { ModalComponent } from 'app/admin/modal/modal.component';
 import { OrdersComponent } from './orders/orders.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { UsersComponent } from './users/users.component';
+import { ModalModule } from 'modal/modal.module';
 
 export const routes: Routes = [
   {
@@ -37,6 +38,7 @@ export const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    ModalModule
   ]
 })
 export class AdminModule { }

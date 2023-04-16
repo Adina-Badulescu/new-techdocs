@@ -16,6 +16,7 @@ import { NavbarComponent } from './home/navbar/navbar.component';
 import { LoginComponent } from './home/navbar/login/login.component';
 import { RegisterComponent } from './home/navbar/register/register.component';
 import { JwtInterceptor } from './services/jwt/jwt.interceptor';
+import { ModalModule } from 'modal/modal.module';
 // import { ErrorInterceptor } from './services/error-interceptor.interceptor';
 
 
@@ -39,7 +40,8 @@ import { JwtInterceptor } from './services/jwt/jwt.interceptor';
     // FontAwesomeModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    ModalModule
   ],
   providers: [
     // {
